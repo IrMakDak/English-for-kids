@@ -17,23 +17,18 @@ function showPage(url, category) {
     
 
     if (request === 'sections') {
-        getResource(`${url}/${request}`)
+        getResource(url)
         .then(data => {
-            data.forEach(({src, title}) => {
+            data.sections.forEach(({src, title}) => {
                 let requestN = title.toLowerCase().replaceAll(' ', '');
-                getResource(`${url}/${requestN}`)
-                .then(
-                    dataN => {
-                        let cardsNum = dataN.length;
-                        new Card(src, title, cardsNum, cardParent, url).render();
-                    }
-                )
+                let cardsNum = data[requestN].length;
+                new Card(src, title, cardsNum, cardParent, url).render();
             })
         })
     } else {
-        getResource(`${url}/${request}`)
+        getResource(url)
         .then(data => {
-            data.forEach(({src, title, translate, audio}) => {
+            data[request].forEach(({src, title, translate, audio}) => {
                 new CategoryCard(src, title, translate, audio, cardParent).render();
             })
         })

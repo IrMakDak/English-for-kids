@@ -151,9 +151,9 @@ function createHeader(url) {
         (0,_showPage__WEBPACK_IMPORTED_MODULE_1__["default"])(url, 'sections');
     });
     
-    (0,_services_getResource__WEBPACK_IMPORTED_MODULE_0__.getResource)(`${url}/sections`)
+    (0,_services_getResource__WEBPACK_IMPORTED_MODULE_0__.getResource)(url)
     .then(data => {
-        data.forEach(i => {
+        data.sections.forEach(i => {
             new liCreate(i.title, url).render();
         })
     })
@@ -345,23 +345,18 @@ function showPage(url, category) {
     
 
     if (request === 'sections') {
-        (0,_services_getResource__WEBPACK_IMPORTED_MODULE_2__.getResource)(`${url}/${request}`)
+        (0,_services_getResource__WEBPACK_IMPORTED_MODULE_2__.getResource)(url)
         .then(data => {
-            data.forEach(({src, title}) => {
+            data.sections.forEach(({src, title}) => {
                 let requestN = title.toLowerCase().replaceAll(' ', '');
-                (0,_services_getResource__WEBPACK_IMPORTED_MODULE_2__.getResource)(`${url}/${requestN}`)
-                .then(
-                    dataN => {
-                        let cardsNum = dataN.length;
-                        new _mainPage_sectionsCardsCreater__WEBPACK_IMPORTED_MODULE_0__["default"](src, title, cardsNum, cardParent, url).render();
-                    }
-                )
+                let cardsNum = data[requestN].length;
+                new _mainPage_sectionsCardsCreater__WEBPACK_IMPORTED_MODULE_0__["default"](src, title, cardsNum, cardParent, url).render();
             })
         })
     } else {
-        (0,_services_getResource__WEBPACK_IMPORTED_MODULE_2__.getResource)(`${url}/${request}`)
+        (0,_services_getResource__WEBPACK_IMPORTED_MODULE_2__.getResource)(url)
         .then(data => {
-            data.forEach(({src, title, translate, audio}) => {
+            data[request].forEach(({src, title, translate, audio}) => {
                 new _categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_1__.CategoryCard(src, title, translate, audio, cardParent).render();
             })
         })
@@ -510,7 +505,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const url = 'http://localhost:3000';
+    const url = 'https://irmakdak.github.io/English-for-kids/cards.json';
 
     (0,_pages_header_headerCreater__WEBPACK_IMPORTED_MODULE_2__["default"])(url);
     (0,_pages_mainPage_mainPageLayout__WEBPACK_IMPORTED_MODULE_0__["default"])();

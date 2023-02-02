@@ -11,9 +11,9 @@ function createHeader(url) {
         showPage(url, 'sections');
     });
     
-    getResource(`${url}/sections`)
+    getResource(url)
     .then(data => {
-        data.forEach(i => {
+        data.sections.forEach(i => {
             new liCreate(i.title, url).render();
         })
     })

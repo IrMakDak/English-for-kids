@@ -4,7 +4,7 @@ import createHeader from "./pages/header/headerCreater";
 import { firstCheckTheme } from "./pages/toggleTheme";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const url = 'http://localhost:3000';
+    const url = 'https://irmakdak.github.io/English-for-kids/cards.json';
 
     createHeader(url);
     mainPageLayout();
