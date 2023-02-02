@@ -10,7 +10,8 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CategoryCard": () => (/* binding */ CategoryCard)
+/* harmony export */   "CategoryCard": () => (/* binding */ CategoryCard),
+/* harmony export */   "flipCard": () => (/* binding */ flipCard)
 /* harmony export */ });
 class CategoryCard {
     constructor(src, title, translate, audio, parent) {
@@ -44,6 +45,7 @@ class CategoryCard {
                 if (e.target !== col.querySelector('.translate-icon')) {
                     new Audio(`${this.audio}`).play();
                 } else {
+                    console.log("TSSS")
                     turnOverCard(col);
                 }
             })
@@ -60,15 +62,45 @@ class CategoryCard {
 }
 
 function turnOverCard(parentOfCard) {
+
+    let cleanCards = document.querySelectorAll('.rotate180');
+    let cleanInv = document.querySelectorAll('.rotate360');
+
+    if (cleanCards) {
+        cleanCards.forEach(i => {
+            i.classList.remove('rotate180');
+        })
+    }
+    if (cleanInv) {
+        cleanInv.forEach(i => {
+            i.classList.remove('rotate360');
+        })
+    }
+
     let card = parentOfCard.querySelector('.card');
     let cardInverted = parentOfCard.querySelector('.card-inverted');
 
-    card.style = 'transform: rotateY(180deg);';
-    cardInverted.style = 'transform: rotateY(360deg);';
+    card.classList.add('rotate180');
+    cardInverted.classList.add('rotate360');
 
     cardInverted.addEventListener("mouseout", () => {
-        card.style = '';
-        cardInverted.style = '';
+        card.classList.remove('rotate180');
+        cardInverted.classList.remove('rotate360');
+    })
+}
+
+function flipCard() {
+    document.querySelector('main').addEventListener('click', (e) => {
+        let cardsInverted = document.querySelectorAll('.card-inverted');
+
+        cardsInverted.forEach(i => {
+            if (i.classList.contains('rotate360') && !e.target.classList.contains('translate-icon')) {
+
+                let card = i.parentElement.firstElementChild;
+                card.classList.remove('rotate180');
+                i.classList.remove('rotate360');
+            }
+        });
     })
 }
 
@@ -499,6 +531,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_showPage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pages/showPage */ "./js/pages/showPage.js");
 /* harmony import */ var _pages_header_headerCreater__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/header/headerCreater */ "./js/pages/header/headerCreater.js");
 /* harmony import */ var _pages_toggleTheme__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/toggleTheme */ "./js/pages/toggleTheme.js");
+/* harmony import */ var _pages_categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/categoryPage/categoryCardCreate */ "./js/pages/categoryPage/categoryCardCreate.js");
+
 
 
 
@@ -512,6 +546,7 @@ document.addEventListener("DOMContentLoaded", () => {
     (0,_pages_showPage__WEBPACK_IMPORTED_MODULE_1__["default"])(url, 'sections');
 
     (0,_pages_toggleTheme__WEBPACK_IMPORTED_MODULE_3__.firstCheckTheme)(url);
+    (0,_pages_categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_4__.flipCard)();
 })
 })();
 

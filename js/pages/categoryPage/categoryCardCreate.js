@@ -30,6 +30,7 @@ class CategoryCard {
                 if (e.target !== col.querySelector('.translate-icon')) {
                     new Audio(`${this.audio}`).play();
                 } else {
+                    console.log("TSSS")
                     turnOverCard(col);
                 }
             })
@@ -46,16 +47,46 @@ class CategoryCard {
 }
 
 function turnOverCard(parentOfCard) {
+
+    let cleanCards = document.querySelectorAll('.rotate180');
+    let cleanInv = document.querySelectorAll('.rotate360');
+
+    if (cleanCards) {
+        cleanCards.forEach(i => {
+            i.classList.remove('rotate180');
+        })
+    }
+    if (cleanInv) {
+        cleanInv.forEach(i => {
+            i.classList.remove('rotate360');
+        })
+    }
+
     let card = parentOfCard.querySelector('.card');
     let cardInverted = parentOfCard.querySelector('.card-inverted');
 
-    card.style = 'transform: rotateY(180deg);';
-    cardInverted.style = 'transform: rotateY(360deg);';
+    card.classList.add('rotate180');
+    cardInverted.classList.add('rotate360');
 
     cardInverted.addEventListener("mouseout", () => {
-        card.style = '';
-        cardInverted.style = '';
+        card.classList.remove('rotate180');
+        cardInverted.classList.remove('rotate360');
     })
 }
 
-export {CategoryCard};
+function flipCard() {
+    document.querySelector('main').addEventListener('click', (e) => {
+        let cardsInverted = document.querySelectorAll('.card-inverted');
+
+        cardsInverted.forEach(i => {
+            if (i.classList.contains('rotate360') && !e.target.classList.contains('translate-icon')) {
+
+                let card = i.parentElement.firstElementChild;
+                card.classList.remove('rotate180');
+                i.classList.remove('rotate360');
+            }
+        });
+    })
+}
+
+export {CategoryCard, flipCard};
