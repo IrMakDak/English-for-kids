@@ -30,7 +30,6 @@ class CategoryCard {
                 if (e.target !== col.querySelector('.translate-icon')) {
                     new Audio(`${this.audio}`).play();
                 } else {
-                    console.log("TSSS")
                     turnOverCard(col);
                 }
             })
@@ -74,7 +73,7 @@ function turnOverCard(parentOfCard) {
     })
 }
 
-function flipCard() {
+function flipCardByClick() {
     document.querySelector('main').addEventListener('click', (e) => {
         let cardsInverted = document.querySelectorAll('.card-inverted');
 
@@ -89,4 +88,4 @@ function flipCard() {
     })
 }
 
-export {CategoryCard, flipCard};
+export {CategoryCard, flipCardByClick};

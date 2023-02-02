@@ -43,7 +43,7 @@
         {
             "src": "./assets/images/food/candy.jpg",
             "title": "Candy",
-            "translate": "Конфеты",
+            "translate": "Конфета",
             "audio": "./assets/audio/food/candy.wav"
         },
         {
@@ -54,7 +54,7 @@
         },
         {
             "src": "./assets/images/food/cookies.jpg",
-            "title": "Cookies",
+            "title": "Cookie",
             "translate": "Печенье",
             "audio": "./assets/audio/food/cookies.wav"
         },
@@ -78,7 +78,7 @@
         },
         {
             "src": "./assets/images/food/humburger.jpg",
-            "title": "Humburger",
+            "title": "Hamburger",
             "translate": "Гамбургер",
             "audio": "./assets/audio/food/humburger.wav"
         }
@@ -86,7 +86,7 @@
     "food2": [
         {
             "src": "./assets/images/food/ice-cream.jpg",
-            "title": "Ice-cream",
+            "title": "Ice cream",
             "translate": "Мороженое",
             "audio": "./assets/audio/food/ice-cream.wav"
         },
@@ -110,7 +110,7 @@
         },
         {
             "src": "./assets/images/food/salat.jpg",
-            "title": "Salat",
+            "title": "Salad",
             "translate": "Салат",
             "audio": "./assets/audio/food/salat.wav"
         },
@@ -149,7 +149,7 @@
         {
             "src": "./assets/images/nature/crescent.jpg",
             "title": "Crescent",
-            "translate": "Луна",
+            "translate": "Полумесяц",
             "audio": "./assets/audio/nature/crescent.wav"
         },
         {
@@ -323,7 +323,7 @@
         {
             "src": "./assets/images/birds/penguin.jpg",
             "title": "Penguin",
-            "translate": "Пенгвин",
+            "translate": "Пингвин",
             "audio": "./assets/audio/birds/penguin.wav"
         },
         {
@@ -397,7 +397,7 @@
         {
             "src": "./assets/images/products/lemon.jpg",
             "title": "Lemon",
-            "translate": "Лемон",
+            "translate": "Лимон",
             "audio": "./assets/audio/products/lemon.wav"
         }
     ],
@@ -416,7 +416,7 @@
         },
         {
             "src": "./assets/images/products/peer.jpg",
-            "title": "Peer",
+            "title": "Pear",
             "translate": "Груша",
             "audio": "./assets/audio/products/peer.wav"
         },

@@ -1,6 +1,7 @@
 import Card from "./mainPage/sectionsCardsCreater";
 import { CategoryCard } from "./categoryPage/categoryCardCreate";
 import {getResource} from "../services/getResource";
+import playMode from "./categoryPage/playMode";
 
 function showPage(url, category) {
 

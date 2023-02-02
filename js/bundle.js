@@ -11,7 +11,7 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "CategoryCard": () => (/* binding */ CategoryCard),
-/* harmony export */   "flipCard": () => (/* binding */ flipCard)
+/* harmony export */   "flipCardByClick": () => (/* binding */ flipCardByClick)
 /* harmony export */ });
 class CategoryCard {
     constructor(src, title, translate, audio, parent) {
@@ -45,7 +45,6 @@ class CategoryCard {
                 if (e.target !== col.querySelector('.translate-icon')) {
                     new Audio(`${this.audio}`).play();
                 } else {
-                    console.log("TSSS")
                     turnOverCard(col);
                 }
             })
@@ -89,7 +88,7 @@ function turnOverCard(parentOfCard) {
     })
 }
 
-function flipCard() {
+function flipCardByClick() {
     document.querySelector('main').addEventListener('click', (e) => {
         let cardsInverted = document.querySelectorAll('.card-inverted');
 
@@ -121,6 +120,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _showPage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../showPage */ "./js/pages/showPage.js");
 /* harmony import */ var _toggleTheme__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../toggleTheme */ "./js/pages/toggleTheme.js");
+/* harmony import */ var _playMode__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./playMode */ "./js/pages/categoryPage/playMode.js");
+
 
 
 
@@ -129,6 +130,7 @@ function startPlayingMode (url) {
 
     if (currentPage !== 'sections') {
         (0,_showPage__WEBPACK_IMPORTED_MODULE_0__["default"])(url, currentPage);
+        (0,_playMode__WEBPACK_IMPORTED_MODULE_2__["default"])();
     }
 }
 function startTrainMode(url) {
@@ -154,6 +156,24 @@ function changeMode (url) {
 }
 
 
+
+/***/ }),
+
+/***/ "./js/pages/categoryPage/playMode.js":
+/*!*******************************************!*\
+  !*** ./js/pages/categoryPage/playMode.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function playMode() {
+    console.log("PLAY");
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (playMode);
 
 /***/ }),
 
@@ -271,13 +291,17 @@ function mainPageLayout() {
     parentOfMainLayout.innerHTML = `
     <main>
         <section class="py-5 text-center container">
-            <div class="row py-lg-5">
+            <div class="row py-lg-5 header-main">
                 <div class="col-lg-6 col-md-8 mx-auto">
                     <h1 class="fw-light">Train & Play</h1>
                 </div>
+                <div>
+                    <a href="#" class="btn">PLAY</a>
+                </div>
+                
             </div>
         </section>
-
+        
         <div class="album py-5 bg-light">
             <div class="container">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"></div>
@@ -358,6 +382,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mainPage_sectionsCardsCreater__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mainPage/sectionsCardsCreater */ "./js/pages/mainPage/sectionsCardsCreater.js");
 /* harmony import */ var _categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./categoryPage/categoryCardCreate */ "./js/pages/categoryPage/categoryCardCreate.js");
 /* harmony import */ var _services_getResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/getResource */ "./js/services/getResource.js");
+/* harmony import */ var _categoryPage_playMode__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./categoryPage/playMode */ "./js/pages/categoryPage/playMode.js");
+
 
 
 
@@ -546,7 +572,7 @@ document.addEventListener("DOMContentLoaded", () => {
     (0,_pages_showPage__WEBPACK_IMPORTED_MODULE_1__["default"])(url, 'sections');
 
     (0,_pages_toggleTheme__WEBPACK_IMPORTED_MODULE_3__.firstCheckTheme)(url);
-    (0,_pages_categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_4__.flipCard)();
+    (0,_pages_categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_4__.flipCardByClick)();
 })
 })();
 

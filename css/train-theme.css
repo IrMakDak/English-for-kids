@@ -26,3 +26,6 @@
   color: rgb(218, 215, 215);
   font-size: 1.5em;
 }
+.btn {
+  display: none;
+}
