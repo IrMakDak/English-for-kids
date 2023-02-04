@@ -1,4 +1,7 @@
-const getResource = async(url) => {
+import getUrl from "../script";
+
+const getResource = async() => {
+  const url = getUrl();
     const res = await fetch(url, {
       method: "GET"
     }) 

@@ -2,27 +2,26 @@ import { getResource } from "../../services/getResource";
 import showPage from "../showPage";
 import createHeaderLayout from "./headerLayout";
 
-function createHeader(url) {
+function createHeader() {
 
     createHeaderLayout();
 
     const btnMain = document.querySelector('.main-page');
     btnMain.addEventListener('click', () => {
-        showPage(url, 'sections');
+        showPage('sections');
     });
     
-    getResource(url)
+    getResource()
     .then(data => {
         data.sections.forEach(i => {
-            new liCreate(i.title, url).render();
+            new liCreate(i.title).render();
         })
     })
 }
 
 class liCreate {
-    constructor(title, url) {
+    constructor(title) {
         this.title = title;
-        this.url = url;
     }
     render() {
         const container = document.querySelector('#headerContainer');
@@ -34,7 +33,7 @@ class liCreate {
         container.append(li);
         const span = li.querySelector("span");
         span.addEventListener('click', () => {
-            showPage(this.url, this.title);
+            showPage(this.title);
         })
     }
 }

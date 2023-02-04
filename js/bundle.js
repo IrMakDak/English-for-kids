@@ -14,13 +14,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "flipCardByClick": () => (/* binding */ flipCardByClick)
 /* harmony export */ });
 class CategoryCard {
-    constructor(src, title, translate, audio, parent) {
+    constructor(src, title, translate, audio) {
         this.src = src;
-        this.alt = title + '-img';
+        this.alt = title.replaceAll(' ', '') + '-img';
         this.title = title;
         this.translate = translate;
         this.audio = audio;
-        this.parent = parent;
+        this.parent = document.querySelector('.album').querySelector('.row');
+        this.id = title.replaceAll(' ', '').toLowerCase();
     }
     render() {
 
@@ -41,7 +42,6 @@ class CategoryCard {
                 </div>
             `;
             col.querySelector('.card').addEventListener('click', (e) => {
-
                 if (e.target !== col.querySelector('.translate-icon')) {
                     new Audio(`${this.audio}`).play();
                 } else {
@@ -51,7 +51,7 @@ class CategoryCard {
         }
         if (localStorage.getItem('theme') === 'play') {
             col.innerHTML = `
-                <div class="card">
+                <div class="card" id=${this.id}>
                     <img src=${this.src} alt=${this.alt} class="album-img">
                 </div>
             `;
@@ -115,65 +115,306 @@ function flipCardByClick() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "applyTheme": () => (/* reexport safe */ _toggleTheme__WEBPACK_IMPORTED_MODULE_1__.applyTheme),
 /* harmony export */   "changeMode": () => (/* binding */ changeMode)
 /* harmony export */ });
 /* harmony import */ var _showPage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../showPage */ "./js/pages/showPage.js");
 /* harmony import */ var _toggleTheme__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../toggleTheme */ "./js/pages/toggleTheme.js");
-/* harmony import */ var _playMode__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./playMode */ "./js/pages/categoryPage/playMode.js");
 
 
 
-
-function startPlayingMode (url) {
-    let currentPage = localStorage.getItem('page');
-
-    if (currentPage !== 'sections') {
-        (0,_showPage__WEBPACK_IMPORTED_MODULE_0__["default"])(url, currentPage);
-        (0,_playMode__WEBPACK_IMPORTED_MODULE_2__["default"])();
-    }
-}
-function startTrainMode(url) {
-
-    let currentPage = localStorage.getItem('page');
-
-    if (currentPage !== 'sections') {
-        (0,_showPage__WEBPACK_IMPORTED_MODULE_0__["default"])(url, currentPage);
-    }
-}
-
-function changeMode (url) {
+function changeMode () {
 
     toggle.setAttribute("aria-checked", toggle.checked);
+    let currentPage = localStorage.getItem('page');
 
     if (toggle.checked === true) {
         (0,_toggleTheme__WEBPACK_IMPORTED_MODULE_1__.applyTheme)('play');
-        startPlayingMode(url);
     } else {
         (0,_toggleTheme__WEBPACK_IMPORTED_MODULE_1__.applyTheme)('train');
-        startTrainMode(url);
     } 
+    if (currentPage !== 'sections') {
+        (0,_showPage__WEBPACK_IMPORTED_MODULE_0__["default"])(currentPage);
+    }
 }
 
 
 
 /***/ }),
 
-/***/ "./js/pages/categoryPage/playMode.js":
-/*!*******************************************!*\
-  !*** ./js/pages/categoryPage/playMode.js ***!
-  \*******************************************/
+/***/ "./js/pages/categoryPage/clickPlayButton.js":
+/*!**************************************************!*\
+  !*** ./js/pages/categoryPage/clickPlayButton.js ***!
+  \**************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "changeTextOnBtn": () => (/* binding */ changeTextOnBtn),
+/* harmony export */   "cleanTextUnderPlayBtn": () => (/* binding */ cleanTextUnderPlayBtn),
+/* harmony export */   "clickPlayBtn": () => (/* binding */ clickPlayBtn),
+/* harmony export */   "hideBlockOnPlay": () => (/* binding */ hideBlockOnPlay),
+/* harmony export */   "showBlockOnPlay": () => (/* binding */ showBlockOnPlay),
+/* harmony export */   "showTextUnderPlayBtn": () => (/* binding */ showTextUnderPlayBtn)
 /* harmony export */ });
-function playMode() {
-    console.log("PLAY");
+/* harmony import */ var _startPlay__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./startPlay */ "./js/pages/categoryPage/startPlay.js");
+
+
+function showBlockOnPlay() {
+    if (localStorage.getItem('theme') === 'play') {
+        const block = document.querySelector('.play-block');
+
+        if (block.classList.contains('hide')) {
+            block.classList.remove('hide');
+        }
+    }
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (playMode);
+function hideBlockOnPlay() {
+    const block = document.querySelector('.play-block');
+
+    if (!block.classList.contains('hide')) {
+        block.classList.add('hide');
+    }
+
+}
+
+function showTextUnderPlayBtn(showText) {
+    const parent =  document.querySelector('.header-main');
+    const text = document.createElement('span');
+
+    text.classList.add('text-btn');
+    text.textContent = showText;
+
+    parent.append(text);
+}
+
+function cleanTextUnderPlayBtn() {
+    const text = document.querySelector('.text-btn');
+    if (text) {
+        text.remove();
+    }
+}
+
+function changeTextOnBtn(text) {
+    const btn = document.querySelector('.btn');
+    if (text === 'REPEAT') {
+        btn.textContent = 'REPEAT';
+    }
+    if (text === 'PLAY') {
+        btn.textContent = 'PLAY';
+    }
+}
+
+function clickPlayBtn() {
+    const btnPlay = document.querySelector('.btn');
+    const block = document.querySelector('.play-block');
+    
+    btnPlay.addEventListener('click', () => {
+        if (!block.classList.contains('hide') && localStorage.getItem('page') !== 'sections' && btnPlay.textContent === 'PLAY') {
+            hideBlockOnPlay();
+            cleanTextUnderPlayBtn();
+            changeTextOnBtn('REPEAT');
+
+            (0,_startPlay__WEBPACK_IMPORTED_MODULE_0__.startPlay)();
+        } else if (block.classList.contains('hide') && localStorage.getItem('page') !== 'sections' && btnPlay.textContent === 'REPEAT') {
+            (0,_startPlay__WEBPACK_IMPORTED_MODULE_0__.repeatAudio)();
+        } else if (!document.querySelector('.text-btn') && localStorage.getItem('page') === 'sections') {
+            showTextUnderPlayBtn('Choose a topic');
+        }
+
+    })
+    block.addEventListener('click', () => {
+        if (!document.querySelector('.text-btn') && localStorage.getItem('page') !== 'sections') {
+            showTextUnderPlayBtn('Click "PLAY" to start');
+        }
+    })
+}
+
+
+
+/***/ }),
+
+/***/ "./js/pages/categoryPage/startPlay.js":
+/*!********************************************!*\
+  !*** ./js/pages/categoryPage/startPlay.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "repeatAudio": () => (/* binding */ repeatAudio),
+/* harmony export */   "startPlay": () => (/* binding */ startPlay)
+/* harmony export */ });
+/* harmony import */ var _services_getResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/getResource */ "./js/services/getResource.js");
+/* harmony import */ var _clickPlayButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./clickPlayButton */ "./js/pages/categoryPage/clickPlayButton.js");
+
+
+
+let currentCard;
+let cardsOrder;
+
+function getCurrentCard() {
+    return currentCard;
+}
+function setCurrentCard(val) {
+    currentCard = val;
+}
+function getCardsOrder() {
+    return cardsOrder;
+}
+function setCardsOrder(val) {
+    cardsOrder = val;
+}
+function showResult() {
+
+    const blockedLayer = document.querySelector('.play-block');
+    let result = document.createElement('img');
+    result.setAttribute('alt', 'result'); 
+    result.classList.add('result-img');
+
+    if (blockedLayer.querySelector('.result-img')) {
+        blockedLayer.querySelector('.result-img').remove();
+    }
+
+    if (document.querySelector('.heart-bad')) {
+        result.setAttribute('src', './assets/icons/result-sad.jpg');
+        (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_1__.showTextUnderPlayBtn)('You lose. Click to play again');
+    } else {
+        result.setAttribute('src', './assets/icons/win.jpg');
+        (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_1__.showTextUnderPlayBtn)('You won! Click to play again');
+    }
+
+    blockedLayer.prepend(result);
+}
+
+function addHeart(type) {
+    let parent = document.querySelector('.hearts-container');
+    if (parent) {
+        let heart = document.createElement('img');
+
+        heart.setAttribute('alt', 'heart');
+        
+        if (type === "GOOD") {
+            heart.setAttribute('src', './assets/icons/heart.png');
+            heart.classList.add('heart-img', 'heart-good');
+        }
+        if (type === "BAD") {
+            heart.setAttribute('src', './assets/icons/heart-bad.png');
+            heart.classList.add('heart-img', 'heart-bad');
+        }
+        parent.append(heart);
+
+        if (parent.querySelectorAll('.heart-bad').length > 6) {
+            (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_1__.showBlockOnPlay)();
+            (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_1__.changeTextOnBtn)('PLAY');
+            showResult();
+        }
+    } else {
+        const header = document.querySelector('.header-main');
+
+        const parent = document.createElement('div');
+        parent.classList.add('hearts-container');
+
+        header.append(parent);
+        addHeart(type);
+    }
+}
+
+function blockCardClick() {
+    let blockCard = getCurrentCard().title.replaceAll(' ', '').toLowerCase();
+    document.querySelector(`#${blockCard}`).classList.add('block-card');
+}
+
+function checkCorrectCard(e) {
+    if (e.target.getAttribute('id') === getCurrentCard().title.replaceAll(' ', '').toLowerCase()){
+        new Audio('./assets/audio/win.mp3').play();
+
+        deleteListenersForPlay();
+
+        getCardsOrder().shift();
+        setCardsOrder(getCardsOrder());
+        blockCardClick();
+
+        if (getCardsOrder().length >= 1) {
+            addHeart('GOOD');
+            setNextCardAsActive();
+        } else {
+            (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_1__.showBlockOnPlay)();
+            (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_1__.changeTextOnBtn)('PLAY');
+            showResult();
+        }
+    } else {
+        addHeart('BAD');
+        new Audio('./assets/audio/fail.mp3').play();
+    }
+}
+
+function setNextCardAsActive() {
+    (0,_services_getResource__WEBPACK_IMPORTED_MODULE_0__.getResource)()
+    .then(data => {
+        let currentPage = localStorage.getItem('page');
+        currentPage = currentPage.replaceAll(' ', '').toLowerCase();
+
+        let currentCardObj = data[currentPage][getCardsOrder()[0]];
+
+        setCurrentCard(currentCardObj);
+
+        new Audio(currentCardObj.audio).play();
+
+        createListenersForPlay();
+    })    
+}
+
+function startPlay() {
+    let cards = document.querySelectorAll('.block-card');
+    cards.forEach(card => {
+        card.classList.remove('block-card');
+    })
+    if (document.querySelector('.hearts-container')) {
+        document.querySelector('.hearts-container').remove()
+    }
+
+    let currentPage = localStorage.getItem('page');
+    currentPage = currentPage.replaceAll(' ', '').toLowerCase();
+
+    (0,_services_getResource__WEBPACK_IMPORTED_MODULE_0__.getResource)()
+    .then(data => {
+        let dataLength = data[currentPage].length;
+        createArray(dataLength);
+
+        setNextCardAsActive();
+    })
+}
+function repeatAudio() {
+    if (getCurrentCard()) {
+        new Audio(getCurrentCard().audio).play();
+    }
+}
+
+function createArray(dataLength) {
+    let mySet = new Set([]);
+    while (mySet.size < dataLength) {
+        mySet.add(Math.floor(Math.random() * (dataLength - 0)));
+    }
+    setCardsOrder(Array.from(mySet));
+}
+
+
+function createListenersForPlay() {
+    let allCards = document.querySelectorAll('.card');
+
+    allCards.forEach(card => {
+        card.addEventListener('click', checkCorrectCard);
+    })
+}
+function deleteListenersForPlay() {
+    let allCards = document.querySelectorAll('.card');
+
+    allCards.forEach(card => {
+        card.removeEventListener('click', checkCorrectCard);
+    })
+}
+
 
 /***/ }),
 
@@ -194,27 +435,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function createHeader(url) {
+function createHeader() {
 
     (0,_headerLayout__WEBPACK_IMPORTED_MODULE_2__["default"])();
 
     const btnMain = document.querySelector('.main-page');
     btnMain.addEventListener('click', () => {
-        (0,_showPage__WEBPACK_IMPORTED_MODULE_1__["default"])(url, 'sections');
+        (0,_showPage__WEBPACK_IMPORTED_MODULE_1__["default"])('sections');
     });
     
-    (0,_services_getResource__WEBPACK_IMPORTED_MODULE_0__.getResource)(url)
+    (0,_services_getResource__WEBPACK_IMPORTED_MODULE_0__.getResource)()
     .then(data => {
         data.sections.forEach(i => {
-            new liCreate(i.title, url).render();
+            new liCreate(i.title).render();
         })
     })
 }
 
 class liCreate {
-    constructor(title, url) {
+    constructor(title) {
         this.title = title;
-        this.url = url;
     }
     render() {
         const container = document.querySelector('#headerContainer');
@@ -226,7 +466,7 @@ class liCreate {
         container.append(li);
         const span = li.querySelector("span");
         span.addEventListener('click', () => {
-            (0,_showPage__WEBPACK_IMPORTED_MODULE_1__["default"])(this.url, this.title);
+            (0,_showPage__WEBPACK_IMPORTED_MODULE_1__["default"])(this.title);
         })
     }
 }
@@ -295,14 +535,12 @@ function mainPageLayout() {
                 <div class="col-lg-6 col-md-8 mx-auto">
                     <h1 class="fw-light">Train & Play</h1>
                 </div>
-                <div>
-                    <a href="#" class="btn">PLAY</a>
-                </div>
-                
+                <div class="btn">PLAY</div>
             </div>
         </section>
         
-        <div class="album py-5 bg-light">
+        <div class="album py-5 bg-album">
+        <div class='play-block hide'></div>
             <div class="container">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"></div>
             </div>
@@ -331,13 +569,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Card {
-    constructor(src, title, cardsNum = 0, parent, url) {
+    constructor(src, title, cardsNum = 0) {
         this.src = src;
         this.alt = title + '-img';
         this.title = title;
-        this.parent = parent;
+        this.parent = document.querySelector('.album').querySelector('.row');
         this.cardsNum = cardsNum;
-        this.url = url;
     }
     render() {
         const col = document.createElement("div");
@@ -356,7 +593,7 @@ class Card {
 
         const card = col.querySelector('.card');
         card.addEventListener('click', () => {
-            (0,_showPage__WEBPACK_IMPORTED_MODULE_0__["default"])(this.url, this.title);
+            (0,_showPage__WEBPACK_IMPORTED_MODULE_0__["default"])(this.title);
         })
     }
 }
@@ -382,40 +619,46 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mainPage_sectionsCardsCreater__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mainPage/sectionsCardsCreater */ "./js/pages/mainPage/sectionsCardsCreater.js");
 /* harmony import */ var _categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./categoryPage/categoryCardCreate */ "./js/pages/categoryPage/categoryCardCreate.js");
 /* harmony import */ var _services_getResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/getResource */ "./js/services/getResource.js");
-/* harmony import */ var _categoryPage_playMode__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./categoryPage/playMode */ "./js/pages/categoryPage/playMode.js");
+/* harmony import */ var _categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./categoryPage/clickPlayButton */ "./js/pages/categoryPage/clickPlayButton.js");
 
 
 
 
 
-function showPage(url, category) {
-
-    localStorage.setItem('page', category);
-
-    const album = document.querySelector('.album');
-    const cardParent = album.querySelector('.row');
+function cleanPage() {
+    const cardParent = document.querySelector('.album').querySelector('.row');
 
     while (cardParent.firstChild) {
         cardParent.removeChild(cardParent.firstChild);
     }
+}
 
+function showPage(category) {
+
+    localStorage.setItem('page', category);
     let request = category.toLowerCase().replaceAll(' ', '');
-    
 
+    cleanPage();
+
+    (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__.changeTextOnBtn)('PLAY');
+    (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__.cleanTextUnderPlayBtn)();
+    
     if (request === 'sections') {
-        (0,_services_getResource__WEBPACK_IMPORTED_MODULE_2__.getResource)(url)
+        (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__.hideBlockOnPlay)();
+        (0,_services_getResource__WEBPACK_IMPORTED_MODULE_2__.getResource)()
         .then(data => {
             data.sections.forEach(({src, title}) => {
                 let requestN = title.toLowerCase().replaceAll(' ', '');
                 let cardsNum = data[requestN].length;
-                new _mainPage_sectionsCardsCreater__WEBPACK_IMPORTED_MODULE_0__["default"](src, title, cardsNum, cardParent, url).render();
+                new _mainPage_sectionsCardsCreater__WEBPACK_IMPORTED_MODULE_0__["default"](src, title, cardsNum).render();
             })
         })
     } else {
-        (0,_services_getResource__WEBPACK_IMPORTED_MODULE_2__.getResource)(url)
+        (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__.showBlockOnPlay)();
+        (0,_services_getResource__WEBPACK_IMPORTED_MODULE_2__.getResource)()
         .then(data => {
             data[request].forEach(({src, title, translate, audio}) => {
-                new _categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_1__.CategoryCard(src, title, translate, audio, cardParent).render();
+                new _categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_1__.CategoryCard(src, title, translate, audio).render();
             })
         })
     }    
@@ -437,15 +680,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "firstCheckTheme": () => (/* binding */ firstCheckTheme)
 /* harmony export */ });
 /* harmony import */ var _categoryPage_changeMode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./categoryPage/changeMode */ "./js/pages/categoryPage/changeMode.js");
+/* harmony import */ var _categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./categoryPage/clickPlayButton */ "./js/pages/categoryPage/clickPlayButton.js");
+
 
 
 function applyTheme(themeName) {
     let themeUrl = `css/${themeName}-theme.css`;
     document.querySelector('[title="theme"]').setAttribute('href', themeUrl);
     localStorage.setItem('theme', themeName);   
+
+    if (themeName === 'train') {
+        (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_1__.cleanTextUnderPlayBtn)();
+        (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_1__.hideBlockOnPlay)();
+    }
 }
 
-function firstCheckTheme(url) {
+function firstCheckTheme() {
     let activeTheme = localStorage.getItem('theme');
     activeTheme ? applyTheme(activeTheme) : applyTheme('train');
 
@@ -457,10 +707,54 @@ function firstCheckTheme(url) {
     }
 
     toggle.addEventListener('change', () => {
-        (0,_categoryPage_changeMode__WEBPACK_IMPORTED_MODULE_0__.changeMode)(url)
+        (0,_categoryPage_changeMode__WEBPACK_IMPORTED_MODULE_0__.changeMode)()
     }) 
 }
 
+
+
+/***/ }),
+
+/***/ "./js/script.js":
+/*!**********************!*\
+  !*** ./js/script.js ***!
+  \**********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _pages_mainPage_mainPageLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pages/mainPage/mainPageLayout */ "./js/pages/mainPage/mainPageLayout.js");
+/* harmony import */ var _pages_showPage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pages/showPage */ "./js/pages/showPage.js");
+/* harmony import */ var _pages_header_headerCreater__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/header/headerCreater */ "./js/pages/header/headerCreater.js");
+/* harmony import */ var _pages_toggleTheme__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/toggleTheme */ "./js/pages/toggleTheme.js");
+/* harmony import */ var _pages_categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/categoryPage/categoryCardCreate */ "./js/pages/categoryPage/categoryCardCreate.js");
+/* harmony import */ var _pages_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/categoryPage/clickPlayButton */ "./js/pages/categoryPage/clickPlayButton.js");
+const url = 'https://irmakdak.github.io/English-for-kids/cards.json';
+function getUrl() {
+    return url;
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getUrl);
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    (0,_pages_header_headerCreater__WEBPACK_IMPORTED_MODULE_2__["default"])();
+    (0,_pages_mainPage_mainPageLayout__WEBPACK_IMPORTED_MODULE_0__["default"])();
+    (0,_pages_showPage__WEBPACK_IMPORTED_MODULE_1__["default"])('sections');
+
+    (0,_pages_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_5__.clickPlayBtn)();
+
+    (0,_pages_toggleTheme__WEBPACK_IMPORTED_MODULE_3__.firstCheckTheme)();
+    (0,_pages_categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_4__.flipCardByClick)();
+})
 
 
 /***/ }),
@@ -475,7 +769,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "getResource": () => (/* binding */ getResource)
 /* harmony export */ });
-const getResource = async(url) => {
+/* harmony import */ var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../script */ "./js/script.js");
+
+
+const getResource = async() => {
+  const url = (0,_script__WEBPACK_IMPORTED_MODULE_0__["default"])();
     const res = await fetch(url, {
       method: "GET"
     }) 
@@ -546,36 +844,12 @@ const getResource = async(url) => {
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-/*!**********************!*\
-  !*** ./js/script.js ***!
-  \**********************/
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _pages_mainPage_mainPageLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pages/mainPage/mainPageLayout */ "./js/pages/mainPage/mainPageLayout.js");
-/* harmony import */ var _pages_showPage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pages/showPage */ "./js/pages/showPage.js");
-/* harmony import */ var _pages_header_headerCreater__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/header/headerCreater */ "./js/pages/header/headerCreater.js");
-/* harmony import */ var _pages_toggleTheme__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/toggleTheme */ "./js/pages/toggleTheme.js");
-/* harmony import */ var _pages_categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/categoryPage/categoryCardCreate */ "./js/pages/categoryPage/categoryCardCreate.js");
-
-
-
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    const url = 'https://irmakdak.github.io/English-for-kids/cards.json';
-
-    (0,_pages_header_headerCreater__WEBPACK_IMPORTED_MODULE_2__["default"])(url);
-    (0,_pages_mainPage_mainPageLayout__WEBPACK_IMPORTED_MODULE_0__["default"])();
-    (0,_pages_showPage__WEBPACK_IMPORTED_MODULE_1__["default"])(url, 'sections');
-
-    (0,_pages_toggleTheme__WEBPACK_IMPORTED_MODULE_3__.firstCheckTheme)(url);
-    (0,_pages_categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_4__.flipCardByClick)();
-})
-})();
-
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./js/script.js");
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=bundle.js.map

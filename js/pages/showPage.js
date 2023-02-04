@@ -1,36 +1,42 @@
 import Card from "./mainPage/sectionsCardsCreater";
 import { CategoryCard } from "./categoryPage/categoryCardCreate";
 import {getResource} from "../services/getResource";
-import playMode from "./categoryPage/playMode";
+import { showBlockOnPlay, hideBlockOnPlay, cleanTextUnderPlayBtn, changeTextOnBtn} from "./categoryPage/clickPlayButton";
 
-function showPage(url, category) {
-
-    localStorage.setItem('page', category);
-
-    const album = document.querySelector('.album');
-    const cardParent = album.querySelector('.row');
+function cleanPage() {
+    const cardParent = document.querySelector('.album').querySelector('.row');
 
     while (cardParent.firstChild) {
         cardParent.removeChild(cardParent.firstChild);
     }
+}
 
+function showPage(category) {
+
+    localStorage.setItem('page', category);
     let request = category.toLowerCase().replaceAll(' ', '');
-    
 
+    cleanPage();
+
+    changeTextOnBtn('PLAY');
+    cleanTextUnderPlayBtn();
+    
     if (request === 'sections') {
-        getResource(url)
+        hideBlockOnPlay();
+        getResource()
         .then(data => {
             data.sections.forEach(({src, title}) => {
                 let requestN = title.toLowerCase().replaceAll(' ', '');
                 let cardsNum = data[requestN].length;
-                new Card(src, title, cardsNum, cardParent, url).render();
+                new Card(src, title, cardsNum).render();
             })
         })
     } else {
-        getResource(url)
+        showBlockOnPlay();
+        getResource()
         .then(data => {
             data[request].forEach(({src, title, translate, audio}) => {
-                new CategoryCard(src, title, translate, audio, cardParent).render();
+                new CategoryCard(src, title, translate, audio).render();
             })
         })
     }    

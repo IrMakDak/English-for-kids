@@ -1,11 +1,12 @@
 class CategoryCard {
-    constructor(src, title, translate, audio, parent) {
+    constructor(src, title, translate, audio) {
         this.src = src;
-        this.alt = title + '-img';
+        this.alt = title.replaceAll(' ', '') + '-img';
         this.title = title;
         this.translate = translate;
         this.audio = audio;
-        this.parent = parent;
+        this.parent = document.querySelector('.album').querySelector('.row');
+        this.id = title.replaceAll(' ', '').toLowerCase();
     }
     render() {
 
@@ -26,7 +27,6 @@ class CategoryCard {
                 </div>
             `;
             col.querySelector('.card').addEventListener('click', (e) => {
-
                 if (e.target !== col.querySelector('.translate-icon')) {
                     new Audio(`${this.audio}`).play();
                 } else {
@@ -36,7 +36,7 @@ class CategoryCard {
         }
         if (localStorage.getItem('theme') === 'play') {
             col.innerHTML = `
-                <div class="card">
+                <div class="card" id=${this.id}>
                     <img src=${this.src} alt=${this.alt} class="album-img">
                 </div>
             `;

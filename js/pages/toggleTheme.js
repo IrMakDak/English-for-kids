@@ -1,12 +1,18 @@
 import { changeMode } from "./categoryPage/changeMode";
+import { cleanTextUnderPlayBtn, hideBlockOnPlay } from "./categoryPage/clickPlayButton";
 
 function applyTheme(themeName) {
     let themeUrl = `css/${themeName}-theme.css`;
     document.querySelector('[title="theme"]').setAttribute('href', themeUrl);
     localStorage.setItem('theme', themeName);   
+
+    if (themeName === 'train') {
+        cleanTextUnderPlayBtn();
+        hideBlockOnPlay();
+    }
 }
 
-function firstCheckTheme(url) {
+function firstCheckTheme() {
     let activeTheme = localStorage.getItem('theme');
     activeTheme ? applyTheme(activeTheme) : applyTheme('train');
 
@@ -18,7 +24,7 @@ function firstCheckTheme(url) {
     }
 
     toggle.addEventListener('change', () => {
-        changeMode(url)
+        changeMode()
     }) 
 }
 

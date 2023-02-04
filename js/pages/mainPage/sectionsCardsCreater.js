@@ -1,13 +1,12 @@
 import showPage from "../showPage";
 
 class Card {
-    constructor(src, title, cardsNum = 0, parent, url) {
+    constructor(src, title, cardsNum = 0) {
         this.src = src;
         this.alt = title + '-img';
         this.title = title;
-        this.parent = parent;
+        this.parent = document.querySelector('.album').querySelector('.row');
         this.cardsNum = cardsNum;
-        this.url = url;
     }
     render() {
         const col = document.createElement("div");
@@ -26,7 +25,7 @@ class Card {
 
         const card = col.querySelector('.card');
         card.addEventListener('click', () => {
-            showPage(this.url, this.title);
+            showPage(this.title);
         })
     }
 }
