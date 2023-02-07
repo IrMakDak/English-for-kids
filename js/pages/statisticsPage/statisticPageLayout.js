@@ -84,7 +84,7 @@ function createStatistics(num, category, word, translation, trainClick, playClic
     
     let tbody = document.querySelector('tbody');
     
-    let percent = Math.floor(errors/playClick)*100 | 0;
+    let percent = Math.floor(errors/playClick *100) | 0;
     
     let row = document.createElement('tr');
 
@@ -154,7 +154,6 @@ function createStatisticsPageLayout() {
         createTh(row_1, "playClick");
         createTh(row_1, "errors");
         createTh(row_1, "percent");
-
         thead.appendChild(row_1);
 
         statisticFilter('Sr. No.', true);

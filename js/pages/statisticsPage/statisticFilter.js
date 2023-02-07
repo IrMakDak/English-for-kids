@@ -34,8 +34,9 @@ function sortWordAlphabet(arr, filter) {
 }
 function sortPercent(arr) {
     arr.sort((a, b) => {
-        let aNew = Math.floor(a.errors/a.playClick) * 100 | 0;
-        let bNew = Math.floor(b.errors/b.playClick) * 100 | 0;
+        let aNew = Math.floor(a.errors/a.playClick * 100) | 0;
+        let bNew = Math.floor(b.errors/b.playClick * 100) | 0;
+
         if (aNew > bNew) {
             return 1;
         } else {

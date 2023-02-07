@@ -824,8 +824,9 @@ function sortWordAlphabet(arr, filter) {
 }
 function sortPercent(arr) {
     arr.sort((a, b) => {
-        let aNew = Math.floor(a.errors/a.playClick) * 100 | 0;
-        let bNew = Math.floor(b.errors/b.playClick) * 100 | 0;
+        let aNew = Math.floor(a.errors/a.playClick * 100) | 0;
+        let bNew = Math.floor(b.errors/b.playClick * 100) | 0;
+
         if (aNew > bNew) {
             return 1;
         } else {
@@ -1004,7 +1005,7 @@ function createStatistics(num, category, word, translation, trainClick, playClic
     
     let tbody = document.querySelector('tbody');
     
-    let percent = Math.floor(errors/playClick)*100 | 0;
+    let percent = Math.floor(errors/playClick *100) | 0;
     
     let row = document.createElement('tr');
 
@@ -1074,7 +1075,6 @@ function createStatisticsPageLayout() {
         createTh(row_1, "playClick");
         createTh(row_1, "errors");
         createTh(row_1, "percent");
-
         thead.appendChild(row_1);
 
         (0,_statisticFilter__WEBPACK_IMPORTED_MODULE_1__["default"])('Sr. No.', true);
