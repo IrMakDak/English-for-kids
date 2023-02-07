@@ -10,6 +10,7 @@ import createHeader from "./pages/header/headerCreater";
 import { firstCheckTheme } from "./pages/toggleTheme";
 import { flipCardByClick } from "./pages/categoryPage/categoryCardCreate";
 import { clickPlayBtn } from "./pages/categoryPage/clickPlayButton";
+import createLocalStorage from "./pages/statisticsPage/createLocalStorage";
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -21,4 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     firstCheckTheme();
     flipCardByClick();
+    
+    if (!localStorage.getItem('statistic')) {
+        createLocalStorage();
+    }
 })

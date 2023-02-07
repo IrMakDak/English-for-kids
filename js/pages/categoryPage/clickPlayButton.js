@@ -16,7 +16,6 @@ function hideBlockOnPlay() {
     if (!block.classList.contains('hide')) {
         block.classList.add('hide');
     }
-
 }
 
 function showTextUnderPlayBtn(showText) {
@@ -34,6 +33,15 @@ function cleanTextUnderPlayBtn() {
     if (text) {
         text.remove();
     }
+}
+function cleanForNewGame() {
+    if (document.querySelector('.hearts-container')) {
+        document.querySelector('.hearts-container').remove();
+    }
+    if (document.querySelector('.result-img')) {
+        document.querySelector('.result-img').remove();
+    }
+    cleanTextUnderPlayBtn();
 }
 
 function changeTextOnBtn(text) {
@@ -53,7 +61,7 @@ function clickPlayBtn() {
     btnPlay.addEventListener('click', () => {
         if (!block.classList.contains('hide') && localStorage.getItem('page') !== 'sections' && btnPlay.textContent === 'PLAY') {
             hideBlockOnPlay();
-            cleanTextUnderPlayBtn();
+            cleanForNewGame();
             changeTextOnBtn('REPEAT');
 
             startPlay();
@@ -62,7 +70,6 @@ function clickPlayBtn() {
         } else if (!document.querySelector('.text-btn') && localStorage.getItem('page') === 'sections') {
             showTextUnderPlayBtn('Choose a topic');
         }
-
     })
     block.addEventListener('click', () => {
         if (!document.querySelector('.text-btn') && localStorage.getItem('page') !== 'sections') {
@@ -71,4 +78,4 @@ function clickPlayBtn() {
     })
 }
 
-export {showBlockOnPlay, hideBlockOnPlay, clickPlayBtn, cleanTextUnderPlayBtn, changeTextOnBtn, showTextUnderPlayBtn};
+export {showBlockOnPlay, hideBlockOnPlay, clickPlayBtn, changeTextOnBtn, showTextUnderPlayBtn, cleanForNewGame};

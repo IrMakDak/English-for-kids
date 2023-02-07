@@ -111,3 +111,14 @@
     opacity: 0.35;
     pointer-events: none ;
   }
+  .train-column {
+    text-align: center;
+  }
+  .play-column{
+    background: #e1acce;
+    text-align: center;
+    font-weight: bold;
+  }
+  .play-column .dropbtn{
+    font-weight: bold;
+  }

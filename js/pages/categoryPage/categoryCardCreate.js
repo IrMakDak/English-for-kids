@@ -1,3 +1,5 @@
+import { editStatistics } from "../statisticsPage/createLocalStorage";
+
 class CategoryCard {
     constructor(src, title, translate, audio) {
         this.src = src;
@@ -27,6 +29,7 @@ class CategoryCard {
                 </div>
             `;
             col.querySelector('.card').addEventListener('click', (e) => {
+                editStatistics(localStorage.getItem('page').toLowerCase().replaceAll(' ', ''), this.title, 'trainClick');
                 if (e.target !== col.querySelector('.translate-icon')) {
                     new Audio(`${this.audio}`).play();
                 } else {

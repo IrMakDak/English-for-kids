@@ -1,5 +1,5 @@
 import { changeMode } from "./categoryPage/changeMode";
-import { cleanTextUnderPlayBtn, hideBlockOnPlay } from "./categoryPage/clickPlayButton";
+import { hideBlockOnPlay, cleanForNewGame } from "./categoryPage/clickPlayButton";
 
 function applyTheme(themeName) {
     let themeUrl = `css/${themeName}-theme.css`;
@@ -7,7 +7,7 @@ function applyTheme(themeName) {
     localStorage.setItem('theme', themeName);   
 
     if (themeName === 'train') {
-        cleanTextUnderPlayBtn();
+        cleanForNewGame();
         hideBlockOnPlay();
     }
 }

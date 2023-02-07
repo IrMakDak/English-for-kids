@@ -7,9 +7,14 @@ function createHeader() {
     createHeaderLayout();
 
     const btnMain = document.querySelector('.main-page');
+    const btnStatistic = document.querySelector('.statistic-page');
+
     btnMain.addEventListener('click', () => {
         showPage('sections');
     });
+    btnStatistic.addEventListener('click', () => {
+        showPage('statistic');
+    })
     
     getResource()
     .then(data => {

@@ -11,7 +11,7 @@
     height: 15px;
 }
 .header-color {
-  background-color: #343a40;
+  background-color: #343a40 !important;
 }
 .main-page {
   color: #fff;
@@ -25,6 +25,22 @@
 .change-section-header {
   color: rgb(218, 215, 215);
   font-size: 1.5em;
+}
+.train-column {
+  background: #343a40;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+}
+.play-column {
+  text-align: center;
+}
+.train-column .dropbtn {
+  color: #fff;
+  font-weight: bold;
+}
+.statistic-page{
+  color:rgb(218, 215, 215);
 }
 .btn {
   display: none;

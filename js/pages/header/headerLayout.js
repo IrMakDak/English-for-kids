@@ -4,7 +4,10 @@ function createHeaderLayout() {
     header.innerHTML = `
         <div class="collapse header-color" id="navbarHeader">
             <div class="container header-container">
-                <h4 class="main-page">Main Page</h4>
+                <div class="header-main-statistic">
+                    <h4 class="main-page">Main Page</h4>
+                    <h4 class="statistic-page">Statistic</h4>
+                </div>
                 <div class="container" id="headerContainer"></div>
             </div>
         </div>

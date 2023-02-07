@@ -1,5 +1,6 @@
 import { getResource } from "../../services/getResource";
 import { showBlockOnPlay, changeTextOnBtn, showTextUnderPlayBtn } from "./clickPlayButton";
+import { editStatistics } from "../statisticsPage/createLocalStorage";
 
 let currentCard;
 let cardsOrder;
@@ -16,6 +17,13 @@ function getCardsOrder() {
 function setCardsOrder(val) {
     cardsOrder = val;
 }
+
+function finishGame() {
+    showBlockOnPlay();
+    changeTextOnBtn('PLAY');
+    showResult();
+}
+
 function showResult() {
 
     const blockedLayer = document.querySelector('.play-block');
@@ -56,9 +64,7 @@ function addHeart(type) {
         parent.append(heart);
 
         if (parent.querySelectorAll('.heart-bad').length > 6) {
-            showBlockOnPlay();
-            changeTextOnBtn('PLAY');
-            showResult();
+            finishGame();
         }
     } else {
         const header = document.querySelector('.header-main');
@@ -77,8 +83,11 @@ function blockCardClick() {
 }
 
 function checkCorrectCard(e) {
+    let currentPage = localStorage.getItem('page').toLocaleLowerCase().replaceAll(' ', '');
+
     if (e.target.getAttribute('id') === getCurrentCard().title.replaceAll(' ', '').toLowerCase()){
         new Audio('./assets/audio/win.mp3').play();
+        editStatistics(currentPage, getCurrentCard().title, 'playClick');
 
         deleteListenersForPlay();
 
@@ -90,13 +99,13 @@ function checkCorrectCard(e) {
             addHeart('GOOD');
             setNextCardAsActive();
         } else {
-            showBlockOnPlay();
-            changeTextOnBtn('PLAY');
-            showResult();
+            finishGame();
         }
     } else {
         addHeart('BAD');
         new Audio('./assets/audio/fail.mp3').play();
+        editStatistics(currentPage, getCurrentCard().title, 'errors');
+        editStatistics(currentPage, getCurrentCard().title, 'playClick');
     }
 }
 
@@ -121,9 +130,6 @@ function startPlay() {
     cards.forEach(card => {
         card.classList.remove('block-card');
     })
-    if (document.querySelector('.hearts-container')) {
-        document.querySelector('.hearts-container').remove()
-    }
 
     let currentPage = localStorage.getItem('page');
     currentPage = currentPage.replaceAll(' ', '').toLowerCase();
