@@ -1,12 +1,9 @@
-import showPage from "../showPage";
+import {hidePlayBtn} from "../showPage";
 import { returnEightErrorsOrLess, returnAllWords } from "./statisticFilter";
 import { CategoryCard } from "../categoryPage/categoryCardCreate";
 
-function trainDifficultWords() {
-    showPage('Difficult');
-}
 function zeroErrorsPage() {
-    document.querySelector('.btn').classList.add('hide');
+    hidePlayBtn();
     const error = document.createElement('div');
     error.classList.add('zero-error');
 
@@ -24,7 +21,4 @@ function difficultPageCreate() {
         zeroErrorsPage();
     }
 }
-
-
-export default trainDifficultWords;
 export {difficultPageCreate, returnAllWords}

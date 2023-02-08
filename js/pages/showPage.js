@@ -1,10 +1,16 @@
 import Card from "./mainPage/sectionsCardsCreater";
 import { CategoryCard } from "./categoryPage/categoryCardCreate";
-import {getResource} from "../services/getResource";
 import { showBlockOnPlay, hideBlockOnPlay, cleanForNewGame, changeTextOnBtn} from "./categoryPage/clickPlayButton";
 import createStatisticsPageLayout from "./statisticsPage/statisticPageLayout";
 import { difficultPageCreate } from "./statisticsPage/trainDifficultWords";
 
+function shortName(name) {
+    return name.toLowerCase().replaceAll(' ', '');
+}
+
+function hidePlayBtn() {
+    document.querySelector('.btn').classList.add('hide');
+}
 function cleanPage() {
     const album = document.querySelector('.album');
     const cardParent = album.querySelector('.row');
@@ -14,7 +20,6 @@ function cleanPage() {
     if (btnPlay.classList.contains('hide')) {
         btnPlay.classList.remove('hide');
     }
-
     if (table) {
         table.remove();
     }
@@ -28,33 +33,32 @@ function showPage(category) {
     cleanForNewGame();
     changeTextOnBtn('PLAY');
 
+    category = shortName(category);
     localStorage.setItem('page', category);
-    let request = category.toLowerCase().replaceAll(' ', '');
-
-    if (request === 'sections') {
+    
+    const resourse = JSON.parse(localStorage.getItem('statistic'));
+    if (category === 'sections') {
+        
         hideBlockOnPlay();
-        getResource()
-        .then(data => {
-            data.sections.forEach(({src, title}) => {
-                let requestN = title.toLowerCase().replaceAll(' ', '');
-                let cardsNum = data[requestN].length;
-                new Card(src, title, cardsNum).render();
-            })
+        resourse.sections.forEach(({src, title}) => {
+            let cardsNum = resourse[shortName(title)].length;
+            new Card(src, title, cardsNum).render();
         })
-    } else if (request === 'difficult') {
+    } else if (category === 'difficult') {
         showBlockOnPlay();
         difficultPageCreate();
-    } else if (request === 'statistic') {
+    } else if (category === 'statistic') {
         hideBlockOnPlay();
         createStatisticsPageLayout();
-        document.querySelector('.btn').classList.add('hide');
+        hidePlayBtn();
     } else {
         showBlockOnPlay();
-        const resourse = JSON.parse(localStorage.getItem('statistic'));
-        resourse[request].forEach(({src, title, translate, audio, key}) => {
+        
+        resourse[category].forEach(({src, title, translate, audio, key}) => {
             new CategoryCard(src, title, translate, audio, key).render();
         })
     }    
 }
 
 export default showPage;
+export {hidePlayBtn, shortName};

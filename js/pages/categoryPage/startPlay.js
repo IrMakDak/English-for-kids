@@ -1,6 +1,7 @@
 import { showBlockOnPlay, changeTextOnBtn, showTextUnderPlayBtn } from "./clickPlayButton";
 import { editStatistics } from "../statisticsPage/createLocalStorage";
 import { returnAllWords } from "../statisticsPage/trainDifficultWords";
+import { shortName } from "../showPage";
 
 let currentCard;
 let cardsOrder;
@@ -79,14 +80,14 @@ function addHeart(type) {
     }
 }
 
-function blockCardClick() {
-    let blockCard = getCurrentCard().title.replaceAll(' ', '').toLowerCase();
+function blockCardClick(blockCard) {
     document.querySelector(`#${blockCard}`).classList.add('block-card');
 }
 
 function checkCorrectCard(e) {
+    let blockCard = shortName(getCurrentCard().title);
 
-    if (e.target.getAttribute('id') === getCurrentCard().title.replaceAll(' ', '').toLowerCase()){
+    if (e.target.getAttribute('id') === blockCard){    
         new Audio('./assets/audio/win.mp3').play();
         editStatistics(getCurrentCard().key, getCurrentCard().title, 'playClick');
 
@@ -94,12 +95,13 @@ function checkCorrectCard(e) {
 
         getCardsOrder().shift();
         setCardsOrder(getCardsOrder());
-        blockCardClick();
+        blockCardClick(blockCard);
 
         if (getCardsOrder().length >= 1) {
             addHeart('GOOD');
             setNextCardAsActive();
         } else {
+            addHeart('GOOD');
             finishGame();
         }
     } else {
@@ -113,7 +115,7 @@ function checkCorrectCard(e) {
 function setNextCardAsActive() {
 
     const resourse = JSON.parse(localStorage.getItem('statistic'));
-    let currentPage = (localStorage.getItem('page')).replaceAll(' ', '').toLowerCase();
+    let currentPage = localStorage.getItem('page');
 
     let cards = document.querySelectorAll('.card');
     let numOfActiveCard = getCardsOrder()[0];
@@ -144,12 +146,7 @@ function startPlay() {
     cards.forEach(card => {
         card.classList.remove('block-card');
     })
-
-    let currentPage = localStorage.getItem('page');
-    currentPage = currentPage.replaceAll(' ', '').toLowerCase();
-
     createArray(document.querySelectorAll('.card').length);
-
     setNextCardAsActive();
 }
 
@@ -161,7 +158,6 @@ function repeatAudio() {
 }
 
 function createArray(dataLength) {
-    console.log('Now on page u see ', dataLength, ' cards');
     let mySet = new Set([]);
     while (mySet.size < dataLength) {
         mySet.add(Math.floor(Math.random() * (dataLength - 0)));

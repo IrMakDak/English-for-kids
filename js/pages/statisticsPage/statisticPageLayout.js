@@ -1,6 +1,6 @@
 import { resetStatistic } from "./createLocalStorage";
 import statisticFilter from "./statisticFilter";
-import trainDifficultWords from "./trainDifficultWords";
+import showPage from "../showPage";
 
 function createTh(parent, inner) {
 
@@ -98,7 +98,7 @@ function createStatisticBtn() {
         resetStatistic();
     })
     diffBtn.addEventListener('click', () => {
-        trainDifficultWords();
+        showPage('Difficult');
     })
 }
 

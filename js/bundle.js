@@ -14,6 +14,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "flipCardByClick": () => (/* binding */ flipCardByClick)
 /* harmony export */ });
 /* harmony import */ var _statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../statisticsPage/createLocalStorage */ "./js/pages/statisticsPage/createLocalStorage.js");
+/* harmony import */ var _showPage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../showPage */ "./js/pages/showPage.js");
+
 
 
 class CategoryCard {
@@ -24,7 +26,7 @@ class CategoryCard {
         this.translate = translate;
         this.audio = audio;
         this.parent = document.querySelector('.album').querySelector('.row');
-        this.id = title.replaceAll(' ', '').toLowerCase();
+        this.id = (0,_showPage__WEBPACK_IMPORTED_MODULE_1__.shortName)(title);
         this.key = key;
     }
     render() {
@@ -267,6 +269,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _clickPlayButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./clickPlayButton */ "./js/pages/categoryPage/clickPlayButton.js");
 /* harmony import */ var _statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../statisticsPage/createLocalStorage */ "./js/pages/statisticsPage/createLocalStorage.js");
 /* harmony import */ var _statisticsPage_trainDifficultWords__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../statisticsPage/trainDifficultWords */ "./js/pages/statisticsPage/trainDifficultWords.js");
+/* harmony import */ var _showPage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../showPage */ "./js/pages/showPage.js");
+
 
 
 
@@ -348,14 +352,14 @@ function addHeart(type) {
     }
 }
 
-function blockCardClick() {
-    let blockCard = getCurrentCard().title.replaceAll(' ', '').toLowerCase();
+function blockCardClick(blockCard) {
     document.querySelector(`#${blockCard}`).classList.add('block-card');
 }
 
 function checkCorrectCard(e) {
+    let blockCard = (0,_showPage__WEBPACK_IMPORTED_MODULE_3__.shortName)(getCurrentCard().title);
 
-    if (e.target.getAttribute('id') === getCurrentCard().title.replaceAll(' ', '').toLowerCase()){
+    if (e.target.getAttribute('id') === blockCard){    
         new Audio('./assets/audio/win.mp3').play();
         (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_1__.editStatistics)(getCurrentCard().key, getCurrentCard().title, 'playClick');
 
@@ -363,12 +367,13 @@ function checkCorrectCard(e) {
 
         getCardsOrder().shift();
         setCardsOrder(getCardsOrder());
-        blockCardClick();
+        blockCardClick(blockCard);
 
         if (getCardsOrder().length >= 1) {
             addHeart('GOOD');
             setNextCardAsActive();
         } else {
+            addHeart('GOOD');
             finishGame();
         }
     } else {
@@ -382,7 +387,7 @@ function checkCorrectCard(e) {
 function setNextCardAsActive() {
 
     const resourse = JSON.parse(localStorage.getItem('statistic'));
-    let currentPage = (localStorage.getItem('page')).replaceAll(' ', '').toLowerCase();
+    let currentPage = localStorage.getItem('page');
 
     let cards = document.querySelectorAll('.card');
     let numOfActiveCard = getCardsOrder()[0];
@@ -413,12 +418,7 @@ function startPlay() {
     cards.forEach(card => {
         card.classList.remove('block-card');
     })
-
-    let currentPage = localStorage.getItem('page');
-    currentPage = currentPage.replaceAll(' ', '').toLowerCase();
-
     createArray(document.querySelectorAll('.card').length);
-
     setNextCardAsActive();
 }
 
@@ -430,7 +430,6 @@ function repeatAudio() {
 }
 
 function createArray(dataLength) {
-    console.log('Now on page u see ', dataLength, ' cards');
     let mySet = new Set([]);
     while (mySet.size < dataLength) {
         mySet.add(Math.floor(Math.random() * (dataLength - 0)));
@@ -661,21 +660,28 @@ class Card {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "hidePlayBtn": () => (/* binding */ hidePlayBtn),
+/* harmony export */   "shortName": () => (/* binding */ shortName)
 /* harmony export */ });
 /* harmony import */ var _mainPage_sectionsCardsCreater__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mainPage/sectionsCardsCreater */ "./js/pages/mainPage/sectionsCardsCreater.js");
 /* harmony import */ var _categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./categoryPage/categoryCardCreate */ "./js/pages/categoryPage/categoryCardCreate.js");
-/* harmony import */ var _services_getResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/getResource */ "./js/services/getResource.js");
-/* harmony import */ var _categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./categoryPage/clickPlayButton */ "./js/pages/categoryPage/clickPlayButton.js");
-/* harmony import */ var _statisticsPage_statisticPageLayout__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./statisticsPage/statisticPageLayout */ "./js/pages/statisticsPage/statisticPageLayout.js");
-/* harmony import */ var _statisticsPage_trainDifficultWords__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./statisticsPage/trainDifficultWords */ "./js/pages/statisticsPage/trainDifficultWords.js");
+/* harmony import */ var _categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./categoryPage/clickPlayButton */ "./js/pages/categoryPage/clickPlayButton.js");
+/* harmony import */ var _statisticsPage_statisticPageLayout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./statisticsPage/statisticPageLayout */ "./js/pages/statisticsPage/statisticPageLayout.js");
+/* harmony import */ var _statisticsPage_trainDifficultWords__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./statisticsPage/trainDifficultWords */ "./js/pages/statisticsPage/trainDifficultWords.js");
 
 
 
 
 
 
+function shortName(name) {
+    return name.toLowerCase().replaceAll(' ', '');
+}
 
+function hidePlayBtn() {
+    document.querySelector('.btn').classList.add('hide');
+}
 function cleanPage() {
     const album = document.querySelector('.album');
     const cardParent = album.querySelector('.row');
@@ -685,7 +691,6 @@ function cleanPage() {
     if (btnPlay.classList.contains('hide')) {
         btnPlay.classList.remove('hide');
     }
-
     if (table) {
         table.remove();
     }
@@ -696,39 +701,38 @@ function cleanPage() {
 
 function showPage(category) {
     cleanPage();
-    (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__.cleanForNewGame)();
-    (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__.changeTextOnBtn)('PLAY');
+    (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_2__.cleanForNewGame)();
+    (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_2__.changeTextOnBtn)('PLAY');
 
+    category = shortName(category);
     localStorage.setItem('page', category);
-    let request = category.toLowerCase().replaceAll(' ', '');
-
-    if (request === 'sections') {
-        (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__.hideBlockOnPlay)();
-        (0,_services_getResource__WEBPACK_IMPORTED_MODULE_2__.getResource)()
-        .then(data => {
-            data.sections.forEach(({src, title}) => {
-                let requestN = title.toLowerCase().replaceAll(' ', '');
-                let cardsNum = data[requestN].length;
-                new _mainPage_sectionsCardsCreater__WEBPACK_IMPORTED_MODULE_0__["default"](src, title, cardsNum).render();
-            })
+    
+    const resourse = JSON.parse(localStorage.getItem('statistic'));
+    if (category === 'sections') {
+        
+        (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_2__.hideBlockOnPlay)();
+        resourse.sections.forEach(({src, title}) => {
+            let cardsNum = resourse[shortName(title)].length;
+            new _mainPage_sectionsCardsCreater__WEBPACK_IMPORTED_MODULE_0__["default"](src, title, cardsNum).render();
         })
-    } else if (request === 'difficult') {
-        (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__.showBlockOnPlay)();
-        (0,_statisticsPage_trainDifficultWords__WEBPACK_IMPORTED_MODULE_5__.difficultPageCreate)();
-    } else if (request === 'statistic') {
-        (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__.hideBlockOnPlay)();
-        (0,_statisticsPage_statisticPageLayout__WEBPACK_IMPORTED_MODULE_4__["default"])();
-        document.querySelector('.btn').classList.add('hide');
+    } else if (category === 'difficult') {
+        (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_2__.showBlockOnPlay)();
+        (0,_statisticsPage_trainDifficultWords__WEBPACK_IMPORTED_MODULE_4__.difficultPageCreate)();
+    } else if (category === 'statistic') {
+        (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_2__.hideBlockOnPlay)();
+        (0,_statisticsPage_statisticPageLayout__WEBPACK_IMPORTED_MODULE_3__["default"])();
+        hidePlayBtn();
     } else {
-        (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__.showBlockOnPlay)();
-        const resourse = JSON.parse(localStorage.getItem('statistic'));
-        resourse[request].forEach(({src, title, translate, audio, key}) => {
+        (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_2__.showBlockOnPlay)();
+        
+        resourse[category].forEach(({src, title, translate, audio, key}) => {
             new _categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_1__.CategoryCard(src, title, translate, audio, key).render();
         })
     }    
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (showPage);
+
 
 /***/ }),
 
@@ -951,7 +955,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _createLocalStorage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createLocalStorage */ "./js/pages/statisticsPage/createLocalStorage.js");
 /* harmony import */ var _statisticFilter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./statisticFilter */ "./js/pages/statisticsPage/statisticFilter.js");
-/* harmony import */ var _trainDifficultWords__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./trainDifficultWords */ "./js/pages/statisticsPage/trainDifficultWords.js");
+/* harmony import */ var _showPage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../showPage */ "./js/pages/showPage.js");
 
 
 
@@ -1052,7 +1056,7 @@ function createStatisticBtn() {
         (0,_createLocalStorage__WEBPACK_IMPORTED_MODULE_0__.resetStatistic)();
     })
     diffBtn.addEventListener('click', () => {
-        ;(0,_trainDifficultWords__WEBPACK_IMPORTED_MODULE_2__["default"])();
+        ;(0,_showPage__WEBPACK_IMPORTED_MODULE_2__["default"])('Difficult');
     })
 }
 
@@ -1191,7 +1195,6 @@ function closeDropdownContent(e) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "difficultPageCreate": () => (/* binding */ difficultPageCreate),
 /* harmony export */   "returnAllWords": () => (/* reexport safe */ _statisticFilter__WEBPACK_IMPORTED_MODULE_1__.returnAllWords)
 /* harmony export */ });
@@ -1202,11 +1205,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function trainDifficultWords() {
-    (0,_showPage__WEBPACK_IMPORTED_MODULE_0__["default"])('Difficult');
-}
 function zeroErrorsPage() {
-    document.querySelector('.btn').classList.add('hide');
+    (0,_showPage__WEBPACK_IMPORTED_MODULE_0__.hidePlayBtn)();
     const error = document.createElement('div');
     error.classList.add('zero-error');
 
@@ -1224,9 +1224,6 @@ function difficultPageCreate() {
         zeroErrorsPage();
     }
 }
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (trainDifficultWords);
 
 
 /***/ }),

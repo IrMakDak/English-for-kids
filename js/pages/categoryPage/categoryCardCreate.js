@@ -1,4 +1,5 @@
 import { editStatistics } from "../statisticsPage/createLocalStorage";
+import { shortName } from "../showPage";
 
 class CategoryCard {
     constructor(src, title, translate, audio, key) {
@@ -8,7 +9,7 @@ class CategoryCard {
         this.translate = translate;
         this.audio = audio;
         this.parent = document.querySelector('.album').querySelector('.row');
-        this.id = title.replaceAll(' ', '').toLowerCase();
+        this.id = shortName(title);
         this.key = key;
     }
     render() {
