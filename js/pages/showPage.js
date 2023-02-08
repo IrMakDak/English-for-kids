@@ -3,6 +3,7 @@ import { CategoryCard } from "./categoryPage/categoryCardCreate";
 import { showBlockOnPlay, hideBlockOnPlay, cleanForNewGame, changeTextOnBtn} from "./categoryPage/clickPlayButton";
 import createStatisticsPageLayout from "./statisticsPage/statisticPageLayout";
 import { difficultPageCreate } from "./statisticsPage/trainDifficultWords";
+import { closeMenu } from "./header/headerLayout";
 
 function shortName(name) {
     return name.toLowerCase().replaceAll(' ', '');
@@ -29,6 +30,7 @@ function cleanPage() {
 }
 
 function showPage(category) {
+    closeMenu();
     cleanPage();
     cleanForNewGame();
     changeTextOnBtn('PLAY');

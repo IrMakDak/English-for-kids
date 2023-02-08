@@ -35,8 +35,28 @@
 .fw-light {
     color: rgba(0, 0, 0, 0.7);
 }
-.container {
-    position: relative;
+.header-container {
+  background: #e1acce;
+}
+.close {
+  color:#363636;
+}
+.close:hover {
+  color:#1b1b1b;
+  transition-duration: 0.2s;
+}
+.statistic-page{
+  color:#4a4949;
+  font-weight: 600;
+}
+.main-page {
+  color: #4a4949;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  line-height: 1.2;
 }
 .header-main {
     display: flex;

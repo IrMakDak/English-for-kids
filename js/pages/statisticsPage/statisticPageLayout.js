@@ -21,15 +21,7 @@ function createTh(parent, inner) {
             heading.classList.add('percent-column');
             break;
     }
-    heading.innerHTML = `
-        <button class="dropbtn">${inner}
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content hide">
-            <div class="ascending">In ascending order</div>
-            <div class="descending">In descending order</div>
-        </div>
-    `;
+    heading.innerHTML = `<button class="dropbtn">${inner}<i class="fa fa-caret-down"></i></button><div class="dropdown-content hide"><div class="ascending">In ascending order</div><div class="descending">In descending order</div></div>`;
     
     let ascending = heading.querySelector('.ascending');
     let descending = heading.querySelector('.descending');

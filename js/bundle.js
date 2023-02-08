@@ -466,32 +466,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _services_getResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/getResource */ "./js/services/getResource.js");
-/* harmony import */ var _showPage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../showPage */ "./js/pages/showPage.js");
-/* harmony import */ var _headerLayout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./headerLayout */ "./js/pages/header/headerLayout.js");
-
+/* harmony import */ var _showPage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../showPage */ "./js/pages/showPage.js");
+/* harmony import */ var _headerLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./headerLayout */ "./js/pages/header/headerLayout.js");
 
 
 
 function createHeader() {
 
-    (0,_headerLayout__WEBPACK_IMPORTED_MODULE_2__["default"])();
+    (0,_headerLayout__WEBPACK_IMPORTED_MODULE_1__["default"])();
 
     const btnMain = document.querySelector('.main-page');
     const btnStatistic = document.querySelector('.statistic-page');
 
     btnMain.addEventListener('click', () => {
-        (0,_showPage__WEBPACK_IMPORTED_MODULE_1__["default"])('sections');
+        (0,_showPage__WEBPACK_IMPORTED_MODULE_0__["default"])('sections');
     });
     btnStatistic.addEventListener('click', () => {
-        (0,_showPage__WEBPACK_IMPORTED_MODULE_1__["default"])('statistic');
+        (0,_showPage__WEBPACK_IMPORTED_MODULE_0__["default"])('statistic');
     })
     
-    ;(0,_services_getResource__WEBPACK_IMPORTED_MODULE_0__.getResource)()
-    .then(data => {
-        data.sections.forEach(i => {
-            new liCreate(i.title).render();
-        })
+    let resourse = JSON.parse(localStorage.getItem('statistic'));
+    resourse.sections.forEach(i => {
+        new liCreate(i.title).render();
     })
 }
 
@@ -500,7 +496,7 @@ class liCreate {
         this.title = title;
     }
     render() {
-        const container = document.querySelector('#headerContainer');
+        const container = document.querySelector('.header-container');
         const li = document.createElement("li");
         li.classList.add("li-header");
         li.innerHTML = `
@@ -509,7 +505,7 @@ class liCreate {
         container.append(li);
         const span = li.querySelector("span");
         span.addEventListener('click', () => {
-            (0,_showPage__WEBPACK_IMPORTED_MODULE_1__["default"])(this.title);
+            (0,_showPage__WEBPACK_IMPORTED_MODULE_0__["default"])(this.title);
         })
     }
 }
@@ -526,26 +522,29 @@ class liCreate {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "closeMenu": () => (/* binding */ closeMenu),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 function createHeaderLayout() {
     const header = document.createElement("header");
 
     header.innerHTML = `
-        <div class="collapse header-color" id="navbarHeader">
+        <div class="header-cont hide">
             <div class="container header-container">
+                <div class="close">&#10008;</div>
                 <div class="header-main-statistic">
                     <h4 class="main-page">Main Page</h4>
                     <h4 class="statistic-page">Statistic</h4>
                 </div>
-                <div class="container" id="headerContainer"></div>
             </div>
         </div>
         <div class="navbar navbar-dark header-color shadow-sm">
             <div class="container">
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <div>
+                    <button class="toggler">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
             <div class="group-switch">
                 <input id="toggle" class="toggle" type="checkbox" role="switch" name="toggle" value="on">
                 <label for="toggle" class="slot">
@@ -556,8 +555,43 @@ function createHeaderLayout() {
         </div>
     `;
     document.body.append(header);
+
+    const menuBtn = header.querySelector('.toggler');
+    const menu = header.querySelector('.header-cont');
+    const close = header.querySelector('.close');
+
+    const backg = document.createElement('div');
+    backg.classList.add('background-all', 'hide');
+    document.body.append(backg);
+
+    menuBtn.addEventListener('click', () => {
+        menuBtn.classList.add('hide');
+        menu.classList.toggle('hide');
+        backg.classList.remove('hide');
+        document.body.style = 'overflow:  hidden;';
+    })
+    close.addEventListener('click', closeMenu);
+    backg.addEventListener('click', closeMenu);
+
+}
+
+function closeMenu() {
+    const menu = document.querySelector('.header-cont');
+    if (!menu.classList.contains('hide')) {
+        menu.classList.add('hide');
+    }
+    const menuBtn = document.querySelector('.toggler');
+    if (menuBtn.classList.contains('hide')) {
+        menuBtn.classList.remove('hide');
+    }
+    const backg = document.querySelector('.background-all');
+    if (!backg.classList.contains('hide')) {
+        backg.classList.add('hide');
+    }
+    document.body.style = '';
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createHeaderLayout);
+
 
 /***/ }),
 
@@ -669,6 +703,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./categoryPage/clickPlayButton */ "./js/pages/categoryPage/clickPlayButton.js");
 /* harmony import */ var _statisticsPage_statisticPageLayout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./statisticsPage/statisticPageLayout */ "./js/pages/statisticsPage/statisticPageLayout.js");
 /* harmony import */ var _statisticsPage_trainDifficultWords__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./statisticsPage/trainDifficultWords */ "./js/pages/statisticsPage/trainDifficultWords.js");
+/* harmony import */ var _header_headerLayout__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./header/headerLayout */ "./js/pages/header/headerLayout.js");
+
 
 
 
@@ -700,6 +736,7 @@ function cleanPage() {
 }
 
 function showPage(category) {
+    (0,_header_headerLayout__WEBPACK_IMPORTED_MODULE_5__.closeMenu)();
     cleanPage();
     (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_2__.cleanForNewGame)();
     (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_2__.changeTextOnBtn)('PLAY');
@@ -979,15 +1016,7 @@ function createTh(parent, inner) {
             heading.classList.add('percent-column');
             break;
     }
-    heading.innerHTML = `
-        <button class="dropbtn">${inner}
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content hide">
-            <div class="ascending">In ascending order</div>
-            <div class="descending">In descending order</div>
-        </div>
-    `;
+    heading.innerHTML = `<button class="dropbtn">${inner}<i class="fa fa-caret-down"></i></button><div class="dropdown-content hide"><div class="ascending">In ascending order</div><div class="descending">In descending order</div></div>`;
     
     let ascending = heading.querySelector('.ascending');
     let descending = heading.querySelector('.descending');

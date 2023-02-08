@@ -202,7 +202,7 @@ body {
   pointer-events: none !important;
 }
 .card:hover {
-  box-shadow: 0 .125rem .9rem rgba(0,0,0, 0.2);
+  box-shadow: 0 .125rem .9rem rgb(90, 89, 89);
   cursor: pointer;
 }
 .cards-numbers {
@@ -222,23 +222,61 @@ body {
   display: block;
   color: #fff;
 }
-#headerContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: right;
-  max-width: 700px;
-  margin-right: 0;
-  padding: 0;
-}
 li {
   list-style-type: none;
   padding: 20px 0 20px 40px;
   cursor: pointer;
 }
+.background-all {
+  background: rgba(0, 0, 0, .4);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+}
+.li-header{
+  display: inline-block;
+  max-width: 100px;
+  white-space: nowrap;
+  padding-left: 0;
+}
+.header-background{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: rgba(0, 0, 0, .2);
+}
+.header-cont{
+  position: relative;
+  z-index: 1000;
+}
 .header-container {
+  position: fixed;
+  background:#343a40;
+  left: 0;
+  top: 0;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  width: 300px;
+  height: 100%;
+  justify-content: flex-start;
+  padding: 20px 30px;
+}
+.close{
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  color: #fff;
+  font-size: 40px;
+}
+.close:hover{
+  color: #fff;
+  transition-duration: 0.2s;
+  cursor: pointer;
 }
 .statistic-page {
   color: #fff;
@@ -250,6 +288,11 @@ li {
   align-items: space-between;
   justify-content: space-between;
   height: 100px;
+  margin: 30px 0px;
+  width: 150px;
+}
+h4{
+  white-space: nowrap;
 }
 .text-white {
   white-space: nowrap;
@@ -464,6 +507,16 @@ th{
   text-align: center;
   margin: 0 auto;
   display: block;
+}
+.toggler, .toggler-menu {
+  color: rgba(90, 90, 90, 0.5);
+  cursor: pointer;
+  padding: .25rem .75rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  background-color: transparent;
+  border: 1px solid #7b7a7a;
+  border-radius: .25rem;
 }
 .show {
   display: block;

@@ -1,4 +1,3 @@
-import { getResource } from "../../services/getResource";
 import showPage from "../showPage";
 import createHeaderLayout from "./headerLayout";
 
@@ -16,11 +15,9 @@ function createHeader() {
         showPage('statistic');
     })
     
-    getResource()
-    .then(data => {
-        data.sections.forEach(i => {
-            new liCreate(i.title).render();
-        })
+    let resourse = JSON.parse(localStorage.getItem('statistic'));
+    resourse.sections.forEach(i => {
+        new liCreate(i.title).render();
     })
 }
 
@@ -29,7 +26,7 @@ class liCreate {
         this.title = title;
     }
     render() {
-        const container = document.querySelector('#headerContainer');
+        const container = document.querySelector('.header-container');
         const li = document.createElement("li");
         li.classList.add("li-header");
         li.innerHTML = `
