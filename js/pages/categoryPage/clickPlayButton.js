@@ -41,6 +41,9 @@ function cleanForNewGame() {
     if (document.querySelector('.result-img')) {
         document.querySelector('.result-img').remove();
     }
+    if (document.querySelector('.statistic-group')) {
+        document.querySelector('.statistic-group').remove();
+    }
     cleanTextUnderPlayBtn();
 }
 

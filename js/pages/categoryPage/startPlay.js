@@ -1,6 +1,6 @@
-import { getResource } from "../../services/getResource";
 import { showBlockOnPlay, changeTextOnBtn, showTextUnderPlayBtn } from "./clickPlayButton";
 import { editStatistics } from "../statisticsPage/createLocalStorage";
+import { returnAllWords } from "../statisticsPage/trainDifficultWords";
 
 let currentCard;
 let cardsOrder;
@@ -83,11 +83,10 @@ function blockCardClick() {
 }
 
 function checkCorrectCard(e) {
-    let currentPage = localStorage.getItem('page').toLocaleLowerCase().replaceAll(' ', '');
 
     if (e.target.getAttribute('id') === getCurrentCard().title.replaceAll(' ', '').toLowerCase()){
         new Audio('./assets/audio/win.mp3').play();
-        editStatistics(currentPage, getCurrentCard().title, 'playClick');
+        editStatistics(getCurrentCard().key, getCurrentCard().title, 'playClick');
 
         deleteListenersForPlay();
 
@@ -104,25 +103,38 @@ function checkCorrectCard(e) {
     } else {
         addHeart('BAD');
         new Audio('./assets/audio/fail.mp3').play();
-        editStatistics(currentPage, getCurrentCard().title, 'errors');
-        editStatistics(currentPage, getCurrentCard().title, 'playClick');
+        editStatistics(getCurrentCard().key, getCurrentCard().title, 'errors');
+        editStatistics(getCurrentCard().key, getCurrentCard().title, 'playClick');
     }
 }
 
 function setNextCardAsActive() {
-    getResource()
-    .then(data => {
-        let currentPage = localStorage.getItem('page');
-        currentPage = currentPage.replaceAll(' ', '').toLowerCase();
 
-        let currentCardObj = data[currentPage][getCardsOrder()[0]];
+    const resourse = JSON.parse(localStorage.getItem('statistic'));
+    let currentPage = (localStorage.getItem('page')).replaceAll(' ', '').toLowerCase();
 
-        setCurrentCard(currentCardObj);
+    let cards = document.querySelectorAll('.card');
+    let numOfActiveCard = getCardsOrder()[0];
 
-        new Audio(currentCardObj.audio).play();
+    let activeCard = cards[numOfActiveCard];
+    let currentCardObj;
+    let arrForSearch;
 
-        createListenersForPlay();
-    })    
+    if (currentPage !== 'difficult') {
+        arrForSearch = resourse[currentPage];
+    } else {
+        arrForSearch = returnAllWords();
+    }
+    arrForSearch.forEach(i => {
+        if (i.title.toLocaleLowerCase().replace(' ', '') === activeCard.id) {
+            currentCardObj = i;
+        }
+    })
+    setCurrentCard(currentCardObj);
+
+    new Audio(currentCardObj.audio).play();
+
+    createListenersForPlay();
 }
 
 function startPlay() {
@@ -134,14 +146,12 @@ function startPlay() {
     let currentPage = localStorage.getItem('page');
     currentPage = currentPage.replaceAll(' ', '').toLowerCase();
 
-    getResource()
-    .then(data => {
-        let dataLength = data[currentPage].length;
-        createArray(dataLength);
+    createArray(document.querySelectorAll('.card').length);
 
-        setNextCardAsActive();
-    })
+    setNextCardAsActive();
 }
+
+
 function repeatAudio() {
     if (getCurrentCard()) {
         new Audio(getCurrentCard().audio).play();
@@ -149,6 +159,7 @@ function repeatAudio() {
 }
 
 function createArray(dataLength) {
+    console.log('Now on page u see ', dataLength, ' cards');
     let mySet = new Set([]);
     while (mySet.size < dataLength) {
         mySet.add(Math.floor(Math.random() * (dataLength - 0)));
@@ -171,4 +182,4 @@ function deleteListenersForPlay() {
         card.removeEventListener('click', checkCorrectCard);
     })
 }
-export {startPlay, repeatAudio};
+export {startPlay, repeatAudio, getCardsOrder, getCurrentCard, setCurrentCard};

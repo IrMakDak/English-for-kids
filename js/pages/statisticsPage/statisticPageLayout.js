@@ -1,5 +1,6 @@
 import { resetStatistic } from "./createLocalStorage";
 import statisticFilter from "./statisticFilter";
+import trainDifficultWords from "./trainDifficultWords";
 
 function createTh(parent, inner) {
 
@@ -42,66 +43,42 @@ function createTh(parent, inner) {
     parent.appendChild(heading);
 }
 
-function createRow(parent, inner, addClass = null) {
-    let row_data = document.createElement('td');
-    row_data.textContent = inner;
-    if (addClass) {
-        row_data.classList.add(addClass);
-    }
-    if (inner === 'Food1' || inner === 'Food2' || inner === 'Nature' || inner === 'Animals1' || inner === 'Animals2' || inner === 'Birds' || inner === "Products1" || inner === "Products2") {
-        row_data.classList.add('category-icon');
-        switch (inner) {
-            case 'Food1':
-                row_data.classList.add('category-icon-red');
-                break;
-            case "Food2": 
-                row_data.classList.add('category-icon-blue');
-                break;
-            case "Nature":
-                row_data.classList.add('category-icon-green');
-                break;
-            case "Animals1": 
-                row_data.classList.add('category-icon-pink');
-                break;
-            case "Animals2":
-                row_data.classList.add('category-icon-orange');
-                break;
-            case "Birds":
-                row_data.classList.add('category-icon-violet');
-                break;
-            case "Products1":
-                row_data.classList.add('category-icon-sky');
-                break
-            case "Products2":
-                row_data.classList.add('category-icon-grey');
-                break;
+function createLiForLegend(key, container) {
+    const legendItem = document.createElement('li');
+    legendItem.classList.add('legend-li');
+    legendItem.textContent = key.charAt(0).toUpperCase() + key.slice(1);
+    addColorClass(legendItem, legendItem.textContent);
+
+    container.append(legendItem);
+}
+function createLegend(container) {
+    const legend = document.createElement('div');
+    const legendTitle = document.createElement('h4');
+    const containerLegend = document.createElement('div');
+    const div = document.createElement('div');
+
+    legend.classList.add('statistic-group');
+    legendTitle.classList.add("legend-title");
+    containerLegend.classList.add('container-legend');
+
+    legendTitle.textContent = "LEGEND";
+
+    container.append(legend);
+    legend.append(div);
+    div.append(legendTitle);
+    div.append(containerLegend);
+
+    let statistic = JSON.parse(localStorage.getItem('statistic'));
+    const keys = Object.keys(statistic);
+    keys.forEach(key => {
+        if (key !== 'sections') {
+            createLiForLegend(key, containerLegend);
         }
-    }
-    parent.appendChild(row_data);
+    })
 }
+function createStatisticBtn() {
 
-function createStatistics(num, category, word, translation, trainClick, playClick, errors) {
-    
-    let tbody = document.querySelector('tbody');
-    
-    let percent = Math.floor(errors/playClick *100) | 0;
-    
-    let row = document.createElement('tr');
-
-    createRow(row, num);
-    createRow(row, (category.charAt(0).toUpperCase() + category.slice(1)));
-    createRow(row, word);
-    createRow(row, translation);
-    createRow(row, trainClick, 'train-column');
-    createRow(row, playClick, 'play-column');
-    createRow(row, errors, 'errors-column');
-    createRow(row, percent, 'percent-column');
-
-    tbody.appendChild(row);
-}
-
-function createStatisticBtn(container) {
-
+    const container = document.querySelector('.statistic-group');
     const btnGroup = document.createElement('div');
     const resetBtn = document.createElement('button');
     const diffBtn = document.createElement('button');
@@ -121,17 +98,75 @@ function createStatisticBtn(container) {
         resetStatistic();
     })
     diffBtn.addEventListener('click', () => {
-        // trainDifficultWords();
-        console.log('train diff');
+        trainDifficultWords();
     })
+}
+
+function addColorClass(block, inner) {
+    switch (inner) {
+        case 'Food1':
+            block.classList.add('category-icon-red');
+            break;
+        case "Food2": 
+            block.classList.add('category-icon-blue');
+            break;
+        case "Nature":
+            block.classList.add('category-icon-green');
+            break;
+        case "Animals1": 
+            block.classList.add('category-icon-pink');
+            break;
+        case "Animals2":
+            block.classList.add('category-icon-orange');
+            break;
+        case "Birds":
+            block.classList.add('category-icon-violet');
+            break;
+        case "Products1":
+            block.classList.add('category-icon-sky');
+            break
+        case "Products2":
+            block.classList.add('category-icon-grey');
+            break;
+    }
+}
+function createRow(parent, inner, addClass = null) {
+    let row_data = document.createElement('td');
+    row_data.textContent = inner;
+    if (addClass) {
+        row_data.classList.add(addClass);
+    }
+    if (inner === 'Food1' || inner === 'Food2' || inner === 'Nature' || inner === 'Animals1' || inner === 'Animals2' || inner === 'Birds' || inner === "Products1" || inner === "Products2") {
+        row_data.classList.add('category-icon');
+        addColorClass(row_data, inner);
+    }
+    parent.appendChild(row_data);
+}
+
+function createStatistics(num, category, word, translation, trainClick, playClick, errors) {
+    
+    let tbody = document.querySelector('tbody');
+    let percent = Math.floor(errors/playClick *100) | 0;
+    let row = document.createElement('tr');
+
+    createRow(row, num);
+    createRow(row, (category.charAt(0).toUpperCase() + category.slice(1)));
+    createRow(row, word);
+    createRow(row, translation);
+    createRow(row, trainClick, 'train-column');
+    createRow(row, playClick, 'play-column');
+    createRow(row, errors, 'errors-column');
+    createRow(row, percent, 'percent-column');
+    tbody.appendChild(row);
 }
 
 function createStatisticsPageLayout() {
 
     const container = document.querySelector('.album').querySelector('.container');
 
-    if (!container.querySelector('.btn-group')) {
-        createStatisticBtn(container);
+    if (!container.querySelector('.statistic-group')) {
+        createLegend(container);
+        createStatisticBtn();
     }
     
     if (!document.querySelector('table')) {

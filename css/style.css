@@ -318,7 +318,6 @@ th{
   flex-direction: column;
   margin: 0 auto;
   justify-content: center;
-  margin-bottom: 40px;
 }
 .errors-column {
   background-color: rgb(249, 129, 129);
@@ -342,30 +341,6 @@ th{
   margin-right: 10px;
   background: black;
   white-space: nowrap;
-}
-.category-icon-red::before{
-  background: red;
-}
-.category-icon-blue::before{
-  background: blue;
-}
-.category-icon-green::before{
-  background: green;
-}
-.category-icon-pink::before{
-  background: pink;
-}
-.category-icon-orange::before{
-  background: orange;
-}
-.category-icon-violet::before{
-  background: violet;
-}
-.category-icon-sky::before{
-  background: rgb(85, 185, 242);
-}
-.category-icon-grey::before{
-  background: rgb(46, 46, 46);
 }
 
 
@@ -422,6 +397,73 @@ th{
 }
 .ascending, .descending {
   cursor: pointer;
+}
+.statistic-group {
+  width: 600px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
+}
+.container-legend {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  height: 200px;
+  width: 300px;
+  border: 1px solid #000;
+}
+.legend-title {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+.legend-li {
+  display: inline-block;
+  padding: 10px 13px;
+  cursor: default;
+}
+.legend-li::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border-radius: 10%;
+  display: inline-block;
+  margin-right: 10px;
+  background: black;
+  white-space: nowrap;
+  transform: translateY(4px);
+}
+
+.category-icon-red::before{
+  background: red;
+}
+.category-icon-blue::before{
+  background: blue;
+}
+.category-icon-green::before{
+  background: green;
+}
+.category-icon-pink::before{
+  background: pink;
+}
+.category-icon-orange::before{
+  background: orange;
+}
+.category-icon-violet::before{
+  background: violet;
+}
+.category-icon-sky::before{
+  background: rgb(85, 185, 242);
+}
+.category-icon-grey::before{
+  background: rgb(46, 46, 46);
+}
+.zero-error{
+  font-size: 25px;
+  text-align: center;
+  margin: 0 auto;
+  display: block;
 }
 .show {
   display: block;

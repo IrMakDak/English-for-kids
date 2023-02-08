@@ -1,7 +1,7 @@
 import { editStatistics } from "../statisticsPage/createLocalStorage";
 
 class CategoryCard {
-    constructor(src, title, translate, audio) {
+    constructor(src, title, translate, audio, key) {
         this.src = src;
         this.alt = title.replaceAll(' ', '') + '-img';
         this.title = title;
@@ -9,6 +9,7 @@ class CategoryCard {
         this.audio = audio;
         this.parent = document.querySelector('.album').querySelector('.row');
         this.id = title.replaceAll(' ', '').toLowerCase();
+        this.key = key;
     }
     render() {
 
@@ -29,7 +30,8 @@ class CategoryCard {
                 </div>
             `;
             col.querySelector('.card').addEventListener('click', (e) => {
-                editStatistics(localStorage.getItem('page').toLowerCase().replaceAll(' ', ''), this.title, 'trainClick');
+                console.log(this.key)
+                editStatistics(this.key, this.title, 'trainClick');
                 if (e.target !== col.querySelector('.translate-icon')) {
                     new Audio(`${this.audio}`).play();
                 } else {

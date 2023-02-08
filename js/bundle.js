@@ -17,7 +17,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class CategoryCard {
-    constructor(src, title, translate, audio) {
+    constructor(src, title, translate, audio, key) {
         this.src = src;
         this.alt = title.replaceAll(' ', '') + '-img';
         this.title = title;
@@ -25,6 +25,7 @@ class CategoryCard {
         this.audio = audio;
         this.parent = document.querySelector('.album').querySelector('.row');
         this.id = title.replaceAll(' ', '').toLowerCase();
+        this.key = key;
     }
     render() {
 
@@ -45,7 +46,8 @@ class CategoryCard {
                 </div>
             `;
             col.querySelector('.card').addEventListener('click', (e) => {
-                (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_0__.editStatistics)(localStorage.getItem('page').toLowerCase().replaceAll(' ', ''), this.title, 'trainClick');
+                console.log(this.key)
+                ;(0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_0__.editStatistics)(this.key, this.title, 'trainClick');
                 if (e.target !== col.querySelector('.translate-icon')) {
                     new Audio(`${this.audio}`).play();
                 } else {
@@ -204,6 +206,9 @@ function cleanForNewGame() {
     if (document.querySelector('.result-img')) {
         document.querySelector('.result-img').remove();
     }
+    if (document.querySelector('.statistic-group')) {
+        document.querySelector('.statistic-group').remove();
+    }
     cleanTextUnderPlayBtn();
 }
 
@@ -253,12 +258,15 @@ function clickPlayBtn() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getCardsOrder": () => (/* binding */ getCardsOrder),
+/* harmony export */   "getCurrentCard": () => (/* binding */ getCurrentCard),
 /* harmony export */   "repeatAudio": () => (/* binding */ repeatAudio),
+/* harmony export */   "setCurrentCard": () => (/* binding */ setCurrentCard),
 /* harmony export */   "startPlay": () => (/* binding */ startPlay)
 /* harmony export */ });
-/* harmony import */ var _services_getResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/getResource */ "./js/services/getResource.js");
-/* harmony import */ var _clickPlayButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./clickPlayButton */ "./js/pages/categoryPage/clickPlayButton.js");
-/* harmony import */ var _statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../statisticsPage/createLocalStorage */ "./js/pages/statisticsPage/createLocalStorage.js");
+/* harmony import */ var _clickPlayButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./clickPlayButton */ "./js/pages/categoryPage/clickPlayButton.js");
+/* harmony import */ var _statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../statisticsPage/createLocalStorage */ "./js/pages/statisticsPage/createLocalStorage.js");
+/* harmony import */ var _statisticsPage_trainDifficultWords__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../statisticsPage/trainDifficultWords */ "./js/pages/statisticsPage/trainDifficultWords.js");
 
 
 
@@ -280,8 +288,8 @@ function setCardsOrder(val) {
 }
 
 function finishGame() {
-    (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_1__.showBlockOnPlay)();
-    (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_1__.changeTextOnBtn)('PLAY');
+    (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_0__.showBlockOnPlay)();
+    (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_0__.changeTextOnBtn)('PLAY');
     showResult();
 }
 
@@ -298,10 +306,10 @@ function showResult() {
 
     if (document.querySelector('.heart-bad')) {
         result.setAttribute('src', './assets/icons/result-sad.jpg');
-        (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_1__.showTextUnderPlayBtn)('You lose. Click to play again');
+        (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_0__.showTextUnderPlayBtn)('You lose. Click to play again');
     } else {
         result.setAttribute('src', './assets/icons/win.jpg');
-        (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_1__.showTextUnderPlayBtn)('You won! Click to play again');
+        (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_0__.showTextUnderPlayBtn)('You won! Click to play again');
     }
 
     blockedLayer.prepend(result);
@@ -344,11 +352,10 @@ function blockCardClick() {
 }
 
 function checkCorrectCard(e) {
-    let currentPage = localStorage.getItem('page').toLocaleLowerCase().replaceAll(' ', '');
 
     if (e.target.getAttribute('id') === getCurrentCard().title.replaceAll(' ', '').toLowerCase()){
         new Audio('./assets/audio/win.mp3').play();
-        (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_2__.editStatistics)(currentPage, getCurrentCard().title, 'playClick');
+        (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_1__.editStatistics)(getCurrentCard().key, getCurrentCard().title, 'playClick');
 
         deleteListenersForPlay();
 
@@ -365,25 +372,38 @@ function checkCorrectCard(e) {
     } else {
         addHeart('BAD');
         new Audio('./assets/audio/fail.mp3').play();
-        (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_2__.editStatistics)(currentPage, getCurrentCard().title, 'errors');
-        (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_2__.editStatistics)(currentPage, getCurrentCard().title, 'playClick');
+        (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_1__.editStatistics)(getCurrentCard().key, getCurrentCard().title, 'errors');
+        (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_1__.editStatistics)(getCurrentCard().key, getCurrentCard().title, 'playClick');
     }
 }
 
 function setNextCardAsActive() {
-    (0,_services_getResource__WEBPACK_IMPORTED_MODULE_0__.getResource)()
-    .then(data => {
-        let currentPage = localStorage.getItem('page');
-        currentPage = currentPage.replaceAll(' ', '').toLowerCase();
 
-        let currentCardObj = data[currentPage][getCardsOrder()[0]];
+    const resourse = JSON.parse(localStorage.getItem('statistic'));
+    let currentPage = (localStorage.getItem('page')).replaceAll(' ', '').toLowerCase();
 
-        setCurrentCard(currentCardObj);
+    let cards = document.querySelectorAll('.card');
+    let numOfActiveCard = getCardsOrder()[0];
 
-        new Audio(currentCardObj.audio).play();
+    let activeCard = cards[numOfActiveCard];
+    let currentCardObj;
+    let arrForSearch;
 
-        createListenersForPlay();
-    })    
+    if (currentPage !== 'difficult') {
+        arrForSearch = resourse[currentPage];
+    } else {
+        arrForSearch = (0,_statisticsPage_trainDifficultWords__WEBPACK_IMPORTED_MODULE_2__.returnAllWords)();
+    }
+    arrForSearch.forEach(i => {
+        if (i.title.toLocaleLowerCase().replace(' ', '') === activeCard.id) {
+            currentCardObj = i;
+        }
+    })
+    setCurrentCard(currentCardObj);
+
+    new Audio(currentCardObj.audio).play();
+
+    createListenersForPlay();
 }
 
 function startPlay() {
@@ -395,14 +415,12 @@ function startPlay() {
     let currentPage = localStorage.getItem('page');
     currentPage = currentPage.replaceAll(' ', '').toLowerCase();
 
-    (0,_services_getResource__WEBPACK_IMPORTED_MODULE_0__.getResource)()
-    .then(data => {
-        let dataLength = data[currentPage].length;
-        createArray(dataLength);
+    createArray(document.querySelectorAll('.card').length);
 
-        setNextCardAsActive();
-    })
+    setNextCardAsActive();
 }
+
+
 function repeatAudio() {
     if (getCurrentCard()) {
         new Audio(getCurrentCard().audio).play();
@@ -410,6 +428,7 @@ function repeatAudio() {
 }
 
 function createArray(dataLength) {
+    console.log('Now on page u see ', dataLength, ' cards');
     let mySet = new Set([]);
     while (mySet.size < dataLength) {
         mySet.add(Math.floor(Math.random() * (dataLength - 0)));
@@ -647,6 +666,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_getResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/getResource */ "./js/services/getResource.js");
 /* harmony import */ var _categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./categoryPage/clickPlayButton */ "./js/pages/categoryPage/clickPlayButton.js");
 /* harmony import */ var _statisticsPage_statisticPageLayout__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./statisticsPage/statisticPageLayout */ "./js/pages/statisticsPage/statisticPageLayout.js");
+/* harmony import */ var _statisticsPage_trainDifficultWords__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./statisticsPage/trainDifficultWords */ "./js/pages/statisticsPage/trainDifficultWords.js");
+
 
 
 
@@ -689,17 +710,18 @@ function showPage(category) {
                 new _mainPage_sectionsCardsCreater__WEBPACK_IMPORTED_MODULE_0__["default"](src, title, cardsNum).render();
             })
         })
+    } else if (request === 'difficult') {
+        (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__.showBlockOnPlay)();
+        (0,_statisticsPage_trainDifficultWords__WEBPACK_IMPORTED_MODULE_5__.difficultPageCreate)();
     } else if (request === 'statistic') {
         (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__.hideBlockOnPlay)();
         (0,_statisticsPage_statisticPageLayout__WEBPACK_IMPORTED_MODULE_4__["default"])();
         document.querySelector('.btn').classList.add('hide');
     } else {
         (0,_categoryPage_clickPlayButton__WEBPACK_IMPORTED_MODULE_3__.showBlockOnPlay)();
-        (0,_services_getResource__WEBPACK_IMPORTED_MODULE_2__.getResource)()
-        .then(data => {
-            data[request].forEach(({src, title, translate, audio}) => {
-                new _categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_1__.CategoryCard(src, title, translate, audio).render();
-            })
+        const resourse = JSON.parse(localStorage.getItem('statistic'));
+        resourse[request].forEach(({src, title, translate, audio, key}) => {
+            new _categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_1__.CategoryCard(src, title, translate, audio, key).render();
         })
     }    
 }
@@ -785,7 +807,9 @@ function resetStatistic() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "returnAllWords": () => (/* binding */ returnAllWords),
+/* harmony export */   "returnEightErrorsOrLess": () => (/* binding */ returnEightErrorsOrLess)
 /* harmony export */ });
 /* harmony import */ var _statisticPageLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./statisticPageLayout */ "./js/pages/statisticsPage/statisticPageLayout.js");
 
@@ -812,21 +836,17 @@ function returnAllWords() {
     return(arr);
 }
 
-function sortWordAlphabet(arr, filter) {
+function tableSort(arr, filter) {
     arr.sort((a, b) => {
-        if (b[filter] < a[filter]) {
-            return 1;
+        let aNew;
+        let bNew;
+        if (filter === 'percent') {
+            aNew = Math.floor(a.errors/a.playClick * 100) | 0;
+            bNew = Math.floor(b.errors/b.playClick * 100) | 0;
         } else {
-            return -1;
+            aNew = a[filter];
+            bNew = b[filter];
         }
-    })
-    return arr;
-}
-function sortPercent(arr) {
-    arr.sort((a, b) => {
-        let aNew = Math.floor(a.errors/a.playClick * 100) | 0;
-        let bNew = Math.floor(b.errors/b.playClick * 100) | 0;
-
         if (aNew > bNew) {
             return 1;
         } else {
@@ -876,33 +896,43 @@ function statisticFilter(filter, reverse) {
             createStatisticsBySection(keys);
             break;
         case "Word":
-            let newArr = (reverse ? sortWordAlphabet(returnAllWords(), 'title') : sortWordAlphabet(returnAllWords(), 'title').reverse());
+            let newArr = (reverse ? tableSort(returnAllWords(), 'title') : tableSort(returnAllWords(), 'title').reverse());
             createStatisticsByWord(newArr);
             break;
         case "Translation":
-            let arr = (reverse ? sortWordAlphabet(returnAllWords(), 'translate') : sortWordAlphabet(returnAllWords(), 'translate').reverse());
+            let arr = (reverse ? tableSort(returnAllWords(), 'translate') : tableSort(returnAllWords(), 'translate').reverse());
             createStatisticsByWord(arr);
             break;
         case "trainClick":
-            let clickArr = (reverse ? sortWordAlphabet(returnAllWords(), 'trainClick') : sortWordAlphabet(returnAllWords(), 'trainClick').reverse());
+            let clickArr = (reverse ? tableSort(returnAllWords(), 'trainClick') : tableSort(returnAllWords(), 'trainClick').reverse());
             createStatisticsByWord(clickArr);
             break;
         case "playClick":
-            let clickArrPlay = (reverse ? sortWordAlphabet(returnAllWords(), 'playClick') : sortWordAlphabet(returnAllWords(), 'playClick').reverse());
+            let clickArrPlay = (reverse ? tableSort(returnAllWords(), 'playClick') : tableSort(returnAllWords(), 'playClick').reverse());
             createStatisticsByWord(clickArrPlay);
             break;
         case "errors":
-            let errorClick = (reverse ? sortWordAlphabet(returnAllWords(), 'errors') : sortWordAlphabet(returnAllWords(), 'errors').reverse());
+            let errorClick = (reverse ? tableSort(returnAllWords(), 'errors') : tableSort(returnAllWords(), 'errors').reverse());
             createStatisticsByWord(errorClick);
             break;
         case "percent":
-            let perClick = (reverse ? sortPercent(returnAllWords()) : sortPercent(returnAllWords()).reverse());
+            let perClick = (reverse ? tableSort(returnAllWords(), "percent") : tableSort(returnAllWords(), "percent").reverse());
             createStatisticsByWord(perClick);
             break;
     }
 }
 
+function returnEightErrorsOrLess() {
+    let errorClick = tableSort(returnAllWords(), 'errors');
+
+    errorClick = errorClick.filter(i => i.errors !== 0).reverse();
+    errorClick.length >= 8 ? errorClick = errorClick.slice(0, 8) : errorClick = errorClick.slice(0, errorClick.length);
+
+    return errorClick;
+}
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (statisticFilter);
+
 
 /***/ }),
 
@@ -919,6 +949,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _createLocalStorage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createLocalStorage */ "./js/pages/statisticsPage/createLocalStorage.js");
 /* harmony import */ var _statisticFilter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./statisticFilter */ "./js/pages/statisticsPage/statisticFilter.js");
+/* harmony import */ var _trainDifficultWords__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./trainDifficultWords */ "./js/pages/statisticsPage/trainDifficultWords.js");
+
 
 
 
@@ -963,66 +995,42 @@ function createTh(parent, inner) {
     parent.appendChild(heading);
 }
 
-function createRow(parent, inner, addClass = null) {
-    let row_data = document.createElement('td');
-    row_data.textContent = inner;
-    if (addClass) {
-        row_data.classList.add(addClass);
-    }
-    if (inner === 'Food1' || inner === 'Food2' || inner === 'Nature' || inner === 'Animals1' || inner === 'Animals2' || inner === 'Birds' || inner === "Products1" || inner === "Products2") {
-        row_data.classList.add('category-icon');
-        switch (inner) {
-            case 'Food1':
-                row_data.classList.add('category-icon-red');
-                break;
-            case "Food2": 
-                row_data.classList.add('category-icon-blue');
-                break;
-            case "Nature":
-                row_data.classList.add('category-icon-green');
-                break;
-            case "Animals1": 
-                row_data.classList.add('category-icon-pink');
-                break;
-            case "Animals2":
-                row_data.classList.add('category-icon-orange');
-                break;
-            case "Birds":
-                row_data.classList.add('category-icon-violet');
-                break;
-            case "Products1":
-                row_data.classList.add('category-icon-sky');
-                break
-            case "Products2":
-                row_data.classList.add('category-icon-grey');
-                break;
+function createLiForLegend(key, container) {
+    const legendItem = document.createElement('li');
+    legendItem.classList.add('legend-li');
+    legendItem.textContent = key.charAt(0).toUpperCase() + key.slice(1);
+    addColorClass(legendItem, legendItem.textContent);
+
+    container.append(legendItem);
+}
+function createLegend(container) {
+    const legend = document.createElement('div');
+    const legendTitle = document.createElement('h4');
+    const containerLegend = document.createElement('div');
+    const div = document.createElement('div');
+
+    legend.classList.add('statistic-group');
+    legendTitle.classList.add("legend-title");
+    containerLegend.classList.add('container-legend');
+
+    legendTitle.textContent = "LEGEND";
+
+    container.append(legend);
+    legend.append(div);
+    div.append(legendTitle);
+    div.append(containerLegend);
+
+    let statistic = JSON.parse(localStorage.getItem('statistic'));
+    const keys = Object.keys(statistic);
+    keys.forEach(key => {
+        if (key !== 'sections') {
+            createLiForLegend(key, containerLegend);
         }
-    }
-    parent.appendChild(row_data);
+    })
 }
+function createStatisticBtn() {
 
-function createStatistics(num, category, word, translation, trainClick, playClick, errors) {
-    
-    let tbody = document.querySelector('tbody');
-    
-    let percent = Math.floor(errors/playClick *100) | 0;
-    
-    let row = document.createElement('tr');
-
-    createRow(row, num);
-    createRow(row, (category.charAt(0).toUpperCase() + category.slice(1)));
-    createRow(row, word);
-    createRow(row, translation);
-    createRow(row, trainClick, 'train-column');
-    createRow(row, playClick, 'play-column');
-    createRow(row, errors, 'errors-column');
-    createRow(row, percent, 'percent-column');
-
-    tbody.appendChild(row);
-}
-
-function createStatisticBtn(container) {
-
+    const container = document.querySelector('.statistic-group');
     const btnGroup = document.createElement('div');
     const resetBtn = document.createElement('button');
     const diffBtn = document.createElement('button');
@@ -1042,17 +1050,75 @@ function createStatisticBtn(container) {
         (0,_createLocalStorage__WEBPACK_IMPORTED_MODULE_0__.resetStatistic)();
     })
     diffBtn.addEventListener('click', () => {
-        // trainDifficultWords();
-        console.log('train diff');
+        ;(0,_trainDifficultWords__WEBPACK_IMPORTED_MODULE_2__["default"])();
     })
+}
+
+function addColorClass(block, inner) {
+    switch (inner) {
+        case 'Food1':
+            block.classList.add('category-icon-red');
+            break;
+        case "Food2": 
+            block.classList.add('category-icon-blue');
+            break;
+        case "Nature":
+            block.classList.add('category-icon-green');
+            break;
+        case "Animals1": 
+            block.classList.add('category-icon-pink');
+            break;
+        case "Animals2":
+            block.classList.add('category-icon-orange');
+            break;
+        case "Birds":
+            block.classList.add('category-icon-violet');
+            break;
+        case "Products1":
+            block.classList.add('category-icon-sky');
+            break
+        case "Products2":
+            block.classList.add('category-icon-grey');
+            break;
+    }
+}
+function createRow(parent, inner, addClass = null) {
+    let row_data = document.createElement('td');
+    row_data.textContent = inner;
+    if (addClass) {
+        row_data.classList.add(addClass);
+    }
+    if (inner === 'Food1' || inner === 'Food2' || inner === 'Nature' || inner === 'Animals1' || inner === 'Animals2' || inner === 'Birds' || inner === "Products1" || inner === "Products2") {
+        row_data.classList.add('category-icon');
+        addColorClass(row_data, inner);
+    }
+    parent.appendChild(row_data);
+}
+
+function createStatistics(num, category, word, translation, trainClick, playClick, errors) {
+    
+    let tbody = document.querySelector('tbody');
+    let percent = Math.floor(errors/playClick *100) | 0;
+    let row = document.createElement('tr');
+
+    createRow(row, num);
+    createRow(row, (category.charAt(0).toUpperCase() + category.slice(1)));
+    createRow(row, word);
+    createRow(row, translation);
+    createRow(row, trainClick, 'train-column');
+    createRow(row, playClick, 'play-column');
+    createRow(row, errors, 'errors-column');
+    createRow(row, percent, 'percent-column');
+    tbody.appendChild(row);
 }
 
 function createStatisticsPageLayout() {
 
     const container = document.querySelector('.album').querySelector('.container');
 
-    if (!container.querySelector('.btn-group')) {
-        createStatisticBtn(container);
+    if (!container.querySelector('.statistic-group')) {
+        createLegend(container);
+        createStatisticBtn();
     }
     
     if (!document.querySelector('table')) {
@@ -1111,6 +1177,54 @@ function closeDropdownContent(e) {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createStatisticsPageLayout);
+
+
+/***/ }),
+
+/***/ "./js/pages/statisticsPage/trainDifficultWords.js":
+/*!********************************************************!*\
+  !*** ./js/pages/statisticsPage/trainDifficultWords.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "difficultPageCreate": () => (/* binding */ difficultPageCreate),
+/* harmony export */   "returnAllWords": () => (/* reexport safe */ _statisticFilter__WEBPACK_IMPORTED_MODULE_1__.returnAllWords)
+/* harmony export */ });
+/* harmony import */ var _showPage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../showPage */ "./js/pages/showPage.js");
+/* harmony import */ var _statisticFilter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./statisticFilter */ "./js/pages/statisticsPage/statisticFilter.js");
+/* harmony import */ var _categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../categoryPage/categoryCardCreate */ "./js/pages/categoryPage/categoryCardCreate.js");
+
+
+
+
+function trainDifficultWords() {
+    (0,_showPage__WEBPACK_IMPORTED_MODULE_0__["default"])('Difficult');
+}
+function zeroErrorsPage() {
+    document.querySelector('.btn').classList.add('hide');
+    const error = document.createElement('div');
+    error.classList.add('zero-error');
+
+    error.textContent = "You don't have any error cards yet";
+
+    document.querySelector('.album').querySelector('.row').append(error);
+}
+function difficultPageCreate() {
+    let errors = (0,_statisticFilter__WEBPACK_IMPORTED_MODULE_1__.returnEightErrorsOrLess)();
+    if (errors.length !== 0) {
+        errors.forEach(error => {
+            new _categoryPage_categoryCardCreate__WEBPACK_IMPORTED_MODULE_2__.CategoryCard(error.src, error.title, error.translate, error.audio, error.key).render();
+        })
+    } else {
+        zeroErrorsPage();
+    }
+}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (trainDifficultWords);
 
 
 /***/ }),

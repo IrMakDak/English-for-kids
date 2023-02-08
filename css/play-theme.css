@@ -114,6 +114,23 @@
   .train-column {
     text-align: center;
   }
+  .reset-btn {
+    font-weight: bold;
+    background:rgb(219, 219, 219);
+  }
+  .reset-btn:hover{
+    background:rgb(203, 203, 203);
+    transition-duration: 0.2s;
+  }
+  .diff-btn {
+    background: #e1acce;
+    color: #000000;
+    font-weight: bold;
+  }
+  .diff-btn:hover {
+    background: #be90ad;
+    transition-duration: 0.2s;
+  }
   .play-column{
     background: #e1acce;
     text-align: center;

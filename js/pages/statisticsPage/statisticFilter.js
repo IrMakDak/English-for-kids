@@ -22,21 +22,17 @@ function returnAllWords() {
     return(arr);
 }
 
-function sortWordAlphabet(arr, filter) {
+function tableSort(arr, filter) {
     arr.sort((a, b) => {
-        if (b[filter] < a[filter]) {
-            return 1;
+        let aNew;
+        let bNew;
+        if (filter === 'percent') {
+            aNew = Math.floor(a.errors/a.playClick * 100) | 0;
+            bNew = Math.floor(b.errors/b.playClick * 100) | 0;
         } else {
-            return -1;
+            aNew = a[filter];
+            bNew = b[filter];
         }
-    })
-    return arr;
-}
-function sortPercent(arr) {
-    arr.sort((a, b) => {
-        let aNew = Math.floor(a.errors/a.playClick * 100) | 0;
-        let bNew = Math.floor(b.errors/b.playClick * 100) | 0;
-
         if (aNew > bNew) {
             return 1;
         } else {
@@ -86,30 +82,40 @@ function statisticFilter(filter, reverse) {
             createStatisticsBySection(keys);
             break;
         case "Word":
-            let newArr = (reverse ? sortWordAlphabet(returnAllWords(), 'title') : sortWordAlphabet(returnAllWords(), 'title').reverse());
+            let newArr = (reverse ? tableSort(returnAllWords(), 'title') : tableSort(returnAllWords(), 'title').reverse());
             createStatisticsByWord(newArr);
             break;
         case "Translation":
-            let arr = (reverse ? sortWordAlphabet(returnAllWords(), 'translate') : sortWordAlphabet(returnAllWords(), 'translate').reverse());
+            let arr = (reverse ? tableSort(returnAllWords(), 'translate') : tableSort(returnAllWords(), 'translate').reverse());
             createStatisticsByWord(arr);
             break;
         case "trainClick":
-            let clickArr = (reverse ? sortWordAlphabet(returnAllWords(), 'trainClick') : sortWordAlphabet(returnAllWords(), 'trainClick').reverse());
+            let clickArr = (reverse ? tableSort(returnAllWords(), 'trainClick') : tableSort(returnAllWords(), 'trainClick').reverse());
             createStatisticsByWord(clickArr);
             break;
         case "playClick":
-            let clickArrPlay = (reverse ? sortWordAlphabet(returnAllWords(), 'playClick') : sortWordAlphabet(returnAllWords(), 'playClick').reverse());
+            let clickArrPlay = (reverse ? tableSort(returnAllWords(), 'playClick') : tableSort(returnAllWords(), 'playClick').reverse());
             createStatisticsByWord(clickArrPlay);
             break;
         case "errors":
-            let errorClick = (reverse ? sortWordAlphabet(returnAllWords(), 'errors') : sortWordAlphabet(returnAllWords(), 'errors').reverse());
+            let errorClick = (reverse ? tableSort(returnAllWords(), 'errors') : tableSort(returnAllWords(), 'errors').reverse());
             createStatisticsByWord(errorClick);
             break;
         case "percent":
-            let perClick = (reverse ? sortPercent(returnAllWords()) : sortPercent(returnAllWords()).reverse());
+            let perClick = (reverse ? tableSort(returnAllWords(), "percent") : tableSort(returnAllWords(), "percent").reverse());
             createStatisticsByWord(perClick);
             break;
     }
 }
 
+function returnEightErrorsOrLess() {
+    let errorClick = tableSort(returnAllWords(), 'errors');
+
+    errorClick = errorClick.filter(i => i.errors !== 0).reverse();
+    errorClick.length >= 8 ? errorClick = errorClick.slice(0, 8) : errorClick = errorClick.slice(0, errorClick.length);
+
+    return errorClick;
+}
+
 export default statisticFilter;
+export {returnEightErrorsOrLess, returnAllWords};

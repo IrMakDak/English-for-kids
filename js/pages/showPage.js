@@ -3,6 +3,7 @@ import { CategoryCard } from "./categoryPage/categoryCardCreate";
 import {getResource} from "../services/getResource";
 import { showBlockOnPlay, hideBlockOnPlay, cleanForNewGame, changeTextOnBtn} from "./categoryPage/clickPlayButton";
 import createStatisticsPageLayout from "./statisticsPage/statisticPageLayout";
+import { difficultPageCreate } from "./statisticsPage/trainDifficultWords";
 
 function cleanPage() {
     const album = document.querySelector('.album');
@@ -40,17 +41,18 @@ function showPage(category) {
                 new Card(src, title, cardsNum).render();
             })
         })
+    } else if (request === 'difficult') {
+        showBlockOnPlay();
+        difficultPageCreate();
     } else if (request === 'statistic') {
         hideBlockOnPlay();
         createStatisticsPageLayout();
         document.querySelector('.btn').classList.add('hide');
     } else {
         showBlockOnPlay();
-        getResource()
-        .then(data => {
-            data[request].forEach(({src, title, translate, audio}) => {
-                new CategoryCard(src, title, translate, audio).render();
-            })
+        const resourse = JSON.parse(localStorage.getItem('statistic'));
+        resourse[request].forEach(({src, title, translate, audio, key}) => {
+            new CategoryCard(src, title, translate, audio, key).render();
         })
     }    
 }
