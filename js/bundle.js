@@ -307,9 +307,11 @@ function showResult() {
     if (document.querySelector('.heart-bad')) {
         result.setAttribute('src', './assets/icons/result-sad.jpg');
         (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_0__.showTextUnderPlayBtn)('You lose. Click to play again');
+        new Audio('./assets/audio/loseGame.mp3').play();
     } else {
         result.setAttribute('src', './assets/icons/win.jpg');
         (0,_clickPlayButton__WEBPACK_IMPORTED_MODULE_0__.showTextUnderPlayBtn)('You won! Click to play again');
+        new Audio('./assets/audio/winGame.mp3').play();
     }
 
     blockedLayer.prepend(result);
