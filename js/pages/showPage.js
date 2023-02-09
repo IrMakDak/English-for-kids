@@ -40,7 +40,6 @@ function showPage(category) {
     
     const resourse = JSON.parse(localStorage.getItem('statistic'));
     if (category === 'sections') {
-        
         hideBlockOnPlay();
         resourse.sections.forEach(({src, title}) => {
             let cardsNum = resourse[shortName(title)].length;

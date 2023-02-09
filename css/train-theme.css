@@ -22,6 +22,12 @@
   font-weight: 500;
   line-height: 1.2;
 }
+.btn{
+  display: none;
+}
+.statistic-page{
+  color:rgb(218, 215, 215);
+}
 .main-page:hover{
   color: #c5c4c4;
   transition-duration: 0.2s;

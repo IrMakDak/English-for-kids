@@ -1,8 +1,8 @@
 import { getResource } from "../../services/getResource";
 import createStatisticsPageLayout from "./statisticPageLayout";
 
-const createLocalStorage = async() => {
-    await getResource()
+const createLocalStorage = () => {
+    getResource()
     .then(data => {
         const keys = Object.keys(data);
         keys.forEach(key => {

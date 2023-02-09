@@ -236,6 +236,7 @@ li {
   height: 100%;
   width: 100%;
   z-index: 100;
+  transition-duration: 0.5s;
 }
 .li-header{
   display: inline-block;
@@ -266,6 +267,7 @@ li {
   height: 100%;
   justify-content: flex-start;
   padding: 20px 30px;
+  transition-duration: 0.5s;
 }
 .close{
   position: absolute;
@@ -291,6 +293,14 @@ li {
   height: 100px;
   margin: 30px 0px;
   width: 150px;
+}
+.hide-menu-left{
+  left: -100%;
+  transition-duration: 0.5s;
+}
+.hide-bg{
+  opacity: 0;
+  transition-duration: 0.5s;
 }
 h4{
   white-space: nowrap;
@@ -338,6 +348,9 @@ h4{
   transform: translateX(-50%);
   opacity: 0.9;
   top: 50px;
+}
+.navbar{
+  height: 56px;
 }
 table{
   border-collapse: collapse;
