@@ -11,26 +11,26 @@ module.exports = {
 
   devtool: "source-map",
 
-  module: {
-    rules: [
-      {
-        test: /\.m?js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [['@babel/preset-env', {
-                debug: true,
-                corejs: 3,
-                useBuiltIns: "usage"
-            }]]
-          }
-        }
-      },
-      {
-        test: /\.css$/,
-        use: [{loader: 'style-loader'}, {loader: 'css-loader'}]
-      }
-    ]
-  }
+  // module: {
+  //   rules: [
+  //     {
+  //       test: /\.m?js$/,
+  //       exclude: /(node_modules|bower_components)/,
+  //       use: {
+  //         loader: 'babel-loader',
+  //         options: {
+  //           presets: [['@babel/preset-env', {
+  //               debug: true,
+  //               corejs: 3,
+  //               useBuiltIns: "usage"
+  //           }]]
+  //         }
+  //       }
+  //     },
+  //     {
+  //       test: /\.css$/,
+  //       use: [{loader: 'style-loader'}, {loader: 'css-loader'}]
+  //     }
+  //   ]
+  // }
 };

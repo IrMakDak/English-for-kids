@@ -15,6 +15,7 @@ const createLocalStorage = async() => {
                 })  
             }
         })
+        console.log(JSON.stringify(data))
         localStorage.setItem('statistic', JSON.stringify(data));
     })
 }

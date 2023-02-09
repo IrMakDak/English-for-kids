@@ -441,6 +441,7 @@ th{
 }
 .ascending, .descending {
   cursor: pointer;
+  background: #fff;
 }
 .statistic-group {
   width: 600px;
