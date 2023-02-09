@@ -299,6 +299,10 @@ h4{
   white-space: nowrap;
   cursor: pointer;
 }
+.change-section-header:hover{
+  color: rgb(128, 128, 128);
+  transition-duration: 0.2s;
+}
 .translate-icon{
   width: 35px;
   height: 35px;
@@ -372,6 +376,9 @@ th{
 }
 .statistic-page{
   color: rgb(44, 44, 44);
+}
+.statistic-page:hover{
+  color: rgb(185, 182, 182);
 }
 .category-icon{
   white-space: nowrap;
@@ -519,6 +526,10 @@ th{
   background-color: transparent;
   border: 1px solid #7b7a7a;
   border-radius: .25rem;
+}
+.toggler:hover{
+  border: 1px solid #afadad;
+  transition-duration: 0.2s;
 }
 .show {
   display: block;
