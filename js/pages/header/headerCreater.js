@@ -16,6 +16,7 @@ function createHeader() {
     })
     
     let resourse = JSON.parse(localStorage.getItem('statistic'));
+
     resourse.sections.forEach(i => {
         new liCreate(i.title).render();
     })
