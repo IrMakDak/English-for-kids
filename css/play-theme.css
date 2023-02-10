@@ -134,6 +134,9 @@
     opacity: 1;
     animation: animate 8s linear infinite;
   }
+  .card {
+    justify-content: center;
+  }
   .block-card {
     opacity: 0.35;
     pointer-events: none ;

@@ -13,6 +13,11 @@
 .header-color {
   background-color: #343a40;
 }
+.diff-btn{
+  background: #343a40;
+  color: #fff;
+  font-weight: 600;
+}
 .main-page {
   color: #fff;
   white-space: nowrap;

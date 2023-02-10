@@ -1,7 +1,7 @@
 function mainPageLayout() {
-    const parentOfMainLayout = document.createElement("div");
+  const parentOfMainLayout = document.createElement('div');
 
-    parentOfMainLayout.innerHTML = `
+  parentOfMainLayout.innerHTML = `
     <main>
         <section class="py-5 text-center container">
             <div class="row py-lg-5 header-main">
@@ -21,7 +21,7 @@ function mainPageLayout() {
     </main>
     `;
 
-    document.body.append(parentOfMainLayout);
+  document.body.append(parentOfMainLayout);
 }
 
 export default mainPageLayout;

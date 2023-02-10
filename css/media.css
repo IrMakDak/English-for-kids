@@ -33,7 +33,7 @@
     }
     .bg-album{
         width: 100%;
-        overflow: hidden;
+        min-height: 400px;
     }
     .change-section-header{
         font-size: 1.2rem;
@@ -125,6 +125,6 @@
     }
     .dropdown-content{
         min-width: 70px;
-        height: 80px;
+        min-height: 60px;
     }
 }

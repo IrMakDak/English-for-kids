@@ -1,53 +1,63 @@
-import { getResource } from "../../services/getResource";
-import createStatisticsPageLayout from "./statisticPageLayout";
+import getResource from '../../services/getResource';
+import createStatisticsPageLayout from './statisticCreater';
 
-const createLocalStorage = () => {
-    getResource()
-    .then(data => {
-        const keys = Object.keys(data);
-        keys.forEach(key => {
-            if (key !== 'sections') {
-                data[key].forEach(i => {
-                    i.key = key;
-                    i.trainClick = 0;
-                    i.playClick = 0;
-                    i.errors = 0;
-                })  
-            }
-        })
-        console.log(JSON.stringify(data))
-        localStorage.setItem('statistic', JSON.stringify(data));
-    })
+function searchInLocalStorage(func) {
+  const newData = JSON.parse(localStorage.getItem('statistic'));
+  const sections = Object.keys(newData);
+  sections.forEach((section) => {
+    if (section !== 'sections') {
+      newData[section].forEach((i) => func(i));
+    }
+  });
+  localStorage.setItem('statistic', JSON.stringify(newData));
 }
-
-function editStatistics(section, title, typeOfClick) {
-    let newData = JSON.parse(localStorage.getItem('statistic'));
-
-    newData[section].forEach(item => {
-        if (item.title === title) {
-            item[typeOfClick]++;
-        }
-    })
-    localStorage.setItem('statistic', JSON.stringify(newData));
+function addKey() {
+  const newData = JSON.parse(localStorage.getItem('statistic'));
+  const sections = Object.keys(newData);
+  sections.forEach((section) => {
+    if (section !== 'sections') {
+      newData[section].forEach((i) => {
+        // eslint-disable-next-line no-param-reassign
+        i.key = section;
+      });
+    }
+  });
+  localStorage.setItem('statistic', JSON.stringify(newData));
 }
-
+function editStatistics(title, typeOfClick, val) {
+  searchInLocalStorage((i) => {
+    if (i.title === title) {
+      // eslint-disable-next-line no-param-reassign
+      i[typeOfClick] += val;
+    }
+  });
+}
 function resetStatistic() {
-    let newData = JSON.parse(localStorage.getItem('statistic'));
-    let section = Object.keys(newData);
+  searchInLocalStorage((i) => {
+    if (i) {
+      // eslint-disable-next-line no-param-reassign
+      i.trainClick = 0;
+      // eslint-disable-next-line no-param-reassign
+      i.playClick = 0;
+      // eslint-disable-next-line no-param-reassign
+      i.errors = 0;
+    }
+  });
+}
+const createLocalStorage = async () => {
+  await getResource()
+    .then((data) => {
+      localStorage.setItem('statistic', JSON.stringify(data));
+      resetStatistic();
+      addKey();
+    });
+};
 
-    section.forEach(i => {
-        if (i !== 'sections') {
-            newData[i].forEach(item => {
-                item.trainClick = 0;
-                item.playClick = 0;
-                item.errors = 0;
-            })
-        }
-    })
-    localStorage.setItem('statistic', JSON.stringify(newData));
-    document.querySelector('table').remove();
-    createStatisticsPageLayout();
+function reloadPageAfterReset() {
+  resetStatistic();
+  document.querySelector('table').remove();
+  createStatisticsPageLayout();
 }
 
 export default createLocalStorage;
-export {editStatistics, resetStatistic};
+export { editStatistics, reloadPageAfterReset };
