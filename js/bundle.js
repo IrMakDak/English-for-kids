@@ -292,7 +292,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _cardsOrder__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cardsOrder */ "./js/pages/categoryPage/cardsOrder.js");
 /* harmony import */ var _showPage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../showPage */ "./js/pages/showPage.js");
 /* harmony import */ var _statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../statisticsPage/createLocalStorage */ "./js/pages/statisticsPage/createLocalStorage.js");
-Object(function webpackMissingModule() { var e = new Error("Cannot find module '../statisticsPage/trainDifficultWords'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+/* harmony import */ var _statisticsPage_statisticFilter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../statisticsPage/statisticFilter */ "./js/pages/statisticsPage/statisticFilter.js");
 
 
 
@@ -388,7 +388,7 @@ function setNextCardAsActive() {
   if (currentPage !== 'difficult') {
     arrForSearch = resourse[currentPage];
   } else {
-    arrForSearch = Object(function webpackMissingModule() { var e = new Error("Cannot find module '../statisticsPage/trainDifficultWords'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())();
+    arrForSearch = (0,_statisticsPage_statisticFilter__WEBPACK_IMPORTED_MODULE_4__.returnAllWords)();
   }
   arrForSearch.forEach((i) => {
     if (i.title.toLocaleLowerCase().replace(' ', '') === activeCard.id) {

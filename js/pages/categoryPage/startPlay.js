@@ -11,7 +11,7 @@ import showPage, {
 } from '../showPage';
 
 import { editStatistics } from '../statisticsPage/createLocalStorage';
-import { returnAllWords } from '../statisticsPage/trainDifficultWords';
+import { returnAllWords } from '../statisticsPage/statisticFilter';
 
 function showResult() {
   const blockedLayer = document.querySelector('.play-block');
