@@ -547,6 +547,10 @@ th{
   border: 1px solid #afadad;
   transition-duration: 0.2s;
 }
+.navbar-disabled {
+  pointer-events: none;
+  background:rgb(90, 89, 89) !important;
+}
 .show {
   display: block;
 }

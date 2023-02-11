@@ -368,10 +368,13 @@ function showResult() {
 function finishGame() {
   (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_0__.showBlockOnPlay)();
   showResult();
-  document.querySelector('.navbar').style = 'pointer-events: none;';
+  const nav = document.querySelector('.navbar');
+  // document.querySelector('.navbar').style = 'pointer-events: none;';
+  nav.classList.add('navbar-disabled');
   setTimeout(() => {
     (0,_showPage__WEBPACK_IMPORTED_MODULE_2__["default"])('sections');
-    document.querySelector('.navbar').style = '';
+    // document.querySelector('.navbar').style = '';
+    nav.classList.remove('navbar-disabled');
   }, 3000);
 }
 
@@ -1273,7 +1276,7 @@ function statisticFilter(filter, reverse) {
       sortAllWords('errors', reverse);
       break;
     case 'percent':
-      sortAllWords('persent', reverse);
+      sortAllWords('percent', reverse);
       break;
     default:
       break;

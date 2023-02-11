@@ -134,7 +134,7 @@ function statisticFilter(filter, reverse) {
       sortAllWords('errors', reverse);
       break;
     case 'percent':
-      sortAllWords('persent', reverse);
+      sortAllWords('percent', reverse);
       break;
     default:
       break;

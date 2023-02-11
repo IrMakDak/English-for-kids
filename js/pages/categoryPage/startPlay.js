@@ -40,10 +40,13 @@ function showResult() {
 function finishGame() {
   showBlockOnPlay();
   showResult();
-  document.querySelector('.navbar').style = 'pointer-events: none;';
+  const nav = document.querySelector('.navbar');
+  // document.querySelector('.navbar').style = 'pointer-events: none;';
+  nav.classList.add('navbar-disabled');
   setTimeout(() => {
     showPage('sections');
-    document.querySelector('.navbar').style = '';
+    // document.querySelector('.navbar').style = '';
+    nav.classList.remove('navbar-disabled');
   }, 3000);
 }
 
