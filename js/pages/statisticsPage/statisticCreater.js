@@ -1,5 +1,10 @@
-import statisticFilter from './statisticFilter';
+import statisticFilter, { returnEightErrorsOrLess } from './statisticFilter';
 import thLayout, { createLiForLegend } from '../pagesLayout/statisticLayout';
+import { resetStatistic } from './createLocalStorage';
+import cleanForNewGame, {
+  showBlockOnPlay, zeroErrorsPage, cleanPage, changeTextOnBtn,
+} from '../DOMFunctions';
+import { loadCategoryCards } from '../cardsCreators/categoryCardCreate';
 
 function clickTh(heading, inner) {
   const ascending = heading.querySelector('.ascending');
@@ -60,6 +65,19 @@ function createLegend(container) {
     }
   });
 }
+function difficultPageCreate() {
+  localStorage.setItem('page', 'difficult');
+  const errors = returnEightErrorsOrLess();
+  cleanPage();
+  cleanForNewGame();
+  changeTextOnBtn('PLAY');
+  if (errors.length !== 0) {
+    showBlockOnPlay();
+    loadCategoryCards(errors);
+  } else {
+    zeroErrorsPage();
+  }
+}
 function createStatisticBtn() {
   const container = document.querySelector('.statistic-group');
   const btnGroup = document.createElement('div');
@@ -76,6 +94,16 @@ function createStatisticBtn() {
   container.append(btnGroup);
   btnGroup.append(resetBtn);
   btnGroup.append(diffBtn);
+
+  if (resetBtn && diffBtn) {
+    resetBtn.addEventListener('click', () => {
+      resetStatistic();
+      statisticFilter('Sr.No.', true);
+    });
+    diffBtn.addEventListener('click', () => {
+      difficultPageCreate();
+    });
+  }
 }
 
 function closeDropdownContent(e) {
@@ -122,3 +150,4 @@ function createStatisticsPageLayout() {
 }
 
 export default createStatisticsPageLayout;
+export { difficultPageCreate };

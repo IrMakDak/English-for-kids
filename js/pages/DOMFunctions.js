@@ -50,7 +50,36 @@ function showBlockOnPlay() {
     }
   }
 }
+function cleanPage() {
+  const album = document.querySelector('.album');
+  const cardParent = album.querySelector('.row');
+  const table = document.querySelector('table');
+  const btnPlay = document.querySelector('.btn');
+
+  if (btnPlay.classList.contains('hide')) {
+    btnPlay.classList.remove('hide');
+  }
+  if (table) {
+    table.remove();
+  }
+  while (cardParent.firstChild) {
+    cardParent.removeChild(cardParent.firstChild);
+  }
+}
+function hidePlayBtn() {
+  document.querySelector('.btn').classList.add('hide');
+}
+function zeroErrorsPage() {
+  hidePlayBtn();
+  const error = document.createElement('div');
+  error.classList.add('zero-error');
+
+  error.textContent = "You don't have any error cards yet";
+
+  document.querySelector('.album').querySelector('.row').append(error);
+}
 export default cleanForNewGame;
 export {
   hideBlockOnPlay, showTextUnderPlayBtn, showBlockOnPlay, changeTextOnBtn,
+  cleanPage, hidePlayBtn, zeroErrorsPage,
 };

@@ -89,5 +89,12 @@ function flipCardByClick() {
     });
   });
 }
+function loadCategoryCards(arr) {
+  arr.forEach(({
+    src, title, translate, audio, key,
+  }) => {
+    new CategoryCard(src, title, translate, audio, key).render();
+  });
+}
 export default CategoryCard;
-export { flipCardByClick };
+export { flipCardByClick, loadCategoryCards };

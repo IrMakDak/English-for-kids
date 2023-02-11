@@ -1,10 +1,10 @@
 import cleanForNewGame, {
   showTextUnderPlayBtn, showBlockOnPlay, changeTextOnBtn, hideBlockOnPlay,
-} from './DOMFunctions';
+} from '../DOMFunctions';
 
 import createArray, {
   getCurrentCard, setCurrentCard, getCardsOrder, setCardsOrder, repeatAudio,
-} from './cardsOrder';
+} from '../cardsCreators/cardsOrder';
 
 import showPage, {
   shortName, hidePlayBtn, cleanPage,

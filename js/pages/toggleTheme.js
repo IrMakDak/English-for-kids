@@ -1,5 +1,6 @@
-import cleanForNewGame, { hideBlockOnPlay } from './categoryPage/DOMFunctions';
+import cleanForNewGame, { hideBlockOnPlay } from './DOMFunctions';
 import showPage from './showPage';
+import { difficultPageCreate } from './statisticsPage/statisticCreater';
 
 function applyTheme(themeName) {
   const themeUrl = `css/${themeName}-theme.css`;
@@ -21,8 +22,10 @@ function changeMode() {
   } else {
     applyTheme('train');
   }
-  if (currentPage !== 'sections') {
+  if (currentPage !== 'sections' && currentPage !== 'difficult') {
     showPage(currentPage);
+  } else if (currentPage === 'difficult') {
+    difficultPageCreate();
   }
 }
 

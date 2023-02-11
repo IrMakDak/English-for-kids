@@ -1,5 +1,5 @@
 import getResource from '../../services/getResource';
-import createStatisticsPageLayout from './statisticCreater';
+// import createStatisticsPageLayout from './statisticCreater';
 
 function searchInLocalStorage(func) {
   const newData = JSON.parse(localStorage.getItem('statistic'));
@@ -53,11 +53,5 @@ const createLocalStorage = async () => {
     });
 };
 
-function reloadPageAfterReset() {
-  resetStatistic();
-  document.querySelector('table').remove();
-  createStatisticsPageLayout();
-}
-
 export default createLocalStorage;
-export { editStatistics, reloadPageAfterReset };
+export { editStatistics, resetStatistic };

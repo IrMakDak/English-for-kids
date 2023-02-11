@@ -2,6 +2,158 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./js/pages/DOMFunctions.js":
+/*!**********************************!*\
+  !*** ./js/pages/DOMFunctions.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "changeTextOnBtn": () => (/* binding */ changeTextOnBtn),
+/* harmony export */   "cleanPage": () => (/* binding */ cleanPage),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "hideBlockOnPlay": () => (/* binding */ hideBlockOnPlay),
+/* harmony export */   "hidePlayBtn": () => (/* binding */ hidePlayBtn),
+/* harmony export */   "showBlockOnPlay": () => (/* binding */ showBlockOnPlay),
+/* harmony export */   "showTextUnderPlayBtn": () => (/* binding */ showTextUnderPlayBtn),
+/* harmony export */   "zeroErrorsPage": () => (/* binding */ zeroErrorsPage)
+/* harmony export */ });
+function cleanTextUnderPlayBtn() {
+  const text = document.querySelector('.text-btn');
+  if (text) {
+    text.remove();
+  }
+}
+function changeTextOnBtn(text) {
+  const btn = document.querySelector('.btn');
+  if (text === 'REPEAT') {
+    btn.textContent = 'REPEAT';
+  }
+  if (text === 'PLAY') {
+    btn.textContent = 'PLAY';
+  }
+}
+function cleanForNewGame() {
+  if (document.querySelector('.hearts-container')) {
+    document.querySelector('.hearts-container').remove();
+  }
+  if (document.querySelector('.result-img')) {
+    document.querySelector('.result-img').remove();
+  }
+  if (document.querySelector('.statistic-group')) {
+    document.querySelector('.statistic-group').remove();
+  }
+  cleanTextUnderPlayBtn();
+}
+function hideBlockOnPlay() {
+  const block = document.querySelector('.play-block');
+
+  if (!block.classList.contains('hide')) {
+    block.classList.add('hide');
+  }
+}
+function showTextUnderPlayBtn(showText) {
+  const parent = document.querySelector('.header-main');
+  const text = document.createElement('span');
+
+  text.classList.add('text-btn');
+  text.textContent = showText;
+
+  parent.append(text);
+}
+function showBlockOnPlay() {
+  if (localStorage.getItem('theme') === 'play') {
+    const block = document.querySelector('.play-block');
+
+    if (block.classList.contains('hide')) {
+      block.classList.remove('hide');
+    }
+  }
+}
+function cleanPage() {
+  const album = document.querySelector('.album');
+  const cardParent = album.querySelector('.row');
+  const table = document.querySelector('table');
+  const btnPlay = document.querySelector('.btn');
+
+  if (btnPlay.classList.contains('hide')) {
+    btnPlay.classList.remove('hide');
+  }
+  if (table) {
+    table.remove();
+  }
+  while (cardParent.firstChild) {
+    cardParent.removeChild(cardParent.firstChild);
+  }
+}
+function hidePlayBtn() {
+  document.querySelector('.btn').classList.add('hide');
+}
+function zeroErrorsPage() {
+  hidePlayBtn();
+  const error = document.createElement('div');
+  error.classList.add('zero-error');
+
+  error.textContent = "You don't have any error cards yet";
+
+  document.querySelector('.album').querySelector('.row').append(error);
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (cleanForNewGame);
+
+
+
+/***/ }),
+
+/***/ "./js/pages/cardsCreators/cardsOrder.js":
+/*!**********************************************!*\
+  !*** ./js/pages/cardsCreators/cardsOrder.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "getCardsOrder": () => (/* binding */ getCardsOrder),
+/* harmony export */   "getCurrentCard": () => (/* binding */ getCurrentCard),
+/* harmony export */   "repeatAudio": () => (/* binding */ repeatAudio),
+/* harmony export */   "setCardsOrder": () => (/* binding */ setCardsOrder),
+/* harmony export */   "setCurrentCard": () => (/* binding */ setCurrentCard)
+/* harmony export */ });
+let currentCard;
+let cardsOrder;
+
+function getCurrentCard() {
+  return currentCard;
+}
+function setCurrentCard(val) {
+  currentCard = val;
+}
+function getCardsOrder() {
+  return cardsOrder;
+}
+function setCardsOrder(val) {
+  cardsOrder = val;
+}
+function createArray(dataLength) {
+  const mySet = new Set([]);
+  while (mySet.size < dataLength) {
+    mySet.add(Math.floor(Math.random() * (dataLength - 0)));
+  }
+  setCardsOrder(Array.from(mySet));
+}
+function repeatAudio() {
+  if (getCurrentCard()) {
+    new Audio(getCurrentCard().audio).play();
+  }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createArray);
+
+
+
+/***/ }),
+
 /***/ "./js/pages/cardsCreators/categoryCardCreate.js":
 /*!******************************************************!*\
   !*** ./js/pages/cardsCreators/categoryCardCreate.js ***!
@@ -11,7 +163,8 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "flipCardByClick": () => (/* binding */ flipCardByClick)
+/* harmony export */   "flipCardByClick": () => (/* binding */ flipCardByClick),
+/* harmony export */   "loadCategoryCards": () => (/* binding */ loadCategoryCards)
 /* harmony export */ });
 /* harmony import */ var _statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../statisticsPage/createLocalStorage */ "./js/pages/statisticsPage/createLocalStorage.js");
 
@@ -105,6 +258,13 @@ function flipCardByClick() {
     });
   });
 }
+function loadCategoryCards(arr) {
+  arr.forEach(({
+    src, title, translate, audio, key,
+  }) => {
+    new CategoryCard(src, title, translate, audio, key).render();
+  });
+}
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CategoryCard);
 
 
@@ -152,127 +312,6 @@ class Card {
 
 /***/ }),
 
-/***/ "./js/pages/categoryPage/DOMFunctions.js":
-/*!***********************************************!*\
-  !*** ./js/pages/categoryPage/DOMFunctions.js ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "changeTextOnBtn": () => (/* binding */ changeTextOnBtn),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "hideBlockOnPlay": () => (/* binding */ hideBlockOnPlay),
-/* harmony export */   "showBlockOnPlay": () => (/* binding */ showBlockOnPlay),
-/* harmony export */   "showTextUnderPlayBtn": () => (/* binding */ showTextUnderPlayBtn)
-/* harmony export */ });
-function cleanTextUnderPlayBtn() {
-  const text = document.querySelector('.text-btn');
-  if (text) {
-    text.remove();
-  }
-}
-function changeTextOnBtn(text) {
-  const btn = document.querySelector('.btn');
-  if (text === 'REPEAT') {
-    btn.textContent = 'REPEAT';
-  }
-  if (text === 'PLAY') {
-    btn.textContent = 'PLAY';
-  }
-}
-function cleanForNewGame() {
-  if (document.querySelector('.hearts-container')) {
-    document.querySelector('.hearts-container').remove();
-  }
-  if (document.querySelector('.result-img')) {
-    document.querySelector('.result-img').remove();
-  }
-  if (document.querySelector('.statistic-group')) {
-    document.querySelector('.statistic-group').remove();
-  }
-  cleanTextUnderPlayBtn();
-}
-function hideBlockOnPlay() {
-  const block = document.querySelector('.play-block');
-
-  if (!block.classList.contains('hide')) {
-    block.classList.add('hide');
-  }
-}
-function showTextUnderPlayBtn(showText) {
-  const parent = document.querySelector('.header-main');
-  const text = document.createElement('span');
-
-  text.classList.add('text-btn');
-  text.textContent = showText;
-
-  parent.append(text);
-}
-function showBlockOnPlay() {
-  if (localStorage.getItem('theme') === 'play') {
-    const block = document.querySelector('.play-block');
-
-    if (block.classList.contains('hide')) {
-      block.classList.remove('hide');
-    }
-  }
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (cleanForNewGame);
-
-
-
-/***/ }),
-
-/***/ "./js/pages/categoryPage/cardsOrder.js":
-/*!*********************************************!*\
-  !*** ./js/pages/categoryPage/cardsOrder.js ***!
-  \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "getCardsOrder": () => (/* binding */ getCardsOrder),
-/* harmony export */   "getCurrentCard": () => (/* binding */ getCurrentCard),
-/* harmony export */   "repeatAudio": () => (/* binding */ repeatAudio),
-/* harmony export */   "setCardsOrder": () => (/* binding */ setCardsOrder),
-/* harmony export */   "setCurrentCard": () => (/* binding */ setCurrentCard)
-/* harmony export */ });
-let currentCard;
-let cardsOrder;
-
-function getCurrentCard() {
-  return currentCard;
-}
-function setCurrentCard(val) {
-  currentCard = val;
-}
-function getCardsOrder() {
-  return cardsOrder;
-}
-function setCardsOrder(val) {
-  cardsOrder = val;
-}
-function createArray(dataLength) {
-  const mySet = new Set([]);
-  while (mySet.size < dataLength) {
-    mySet.add(Math.floor(Math.random() * (dataLength - 0)));
-  }
-  setCardsOrder(Array.from(mySet));
-}
-function repeatAudio() {
-  if (getCurrentCard()) {
-    new Audio(getCurrentCard().audio).play();
-  }
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createArray);
-
-
-
-/***/ }),
-
 /***/ "./js/pages/categoryPage/startPlay.js":
 /*!********************************************!*\
   !*** ./js/pages/categoryPage/startPlay.js ***!
@@ -282,14 +321,14 @@ function repeatAudio() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "clickPlayBtn": () => (/* binding */ clickPlayBtn),
-/* harmony export */   "getCardsOrder": () => (/* reexport safe */ _cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCardsOrder),
-/* harmony export */   "getCurrentCard": () => (/* reexport safe */ _cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCurrentCard),
-/* harmony export */   "repeatAudio": () => (/* reexport safe */ _cardsOrder__WEBPACK_IMPORTED_MODULE_1__.repeatAudio),
-/* harmony export */   "setCurrentCard": () => (/* reexport safe */ _cardsOrder__WEBPACK_IMPORTED_MODULE_1__.setCurrentCard),
+/* harmony export */   "getCardsOrder": () => (/* reexport safe */ _cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCardsOrder),
+/* harmony export */   "getCurrentCard": () => (/* reexport safe */ _cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCurrentCard),
+/* harmony export */   "repeatAudio": () => (/* reexport safe */ _cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.repeatAudio),
+/* harmony export */   "setCurrentCard": () => (/* reexport safe */ _cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.setCurrentCard),
 /* harmony export */   "startPlay": () => (/* binding */ startPlay)
 /* harmony export */ });
-/* harmony import */ var _DOMFunctions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DOMFunctions */ "./js/pages/categoryPage/DOMFunctions.js");
-/* harmony import */ var _cardsOrder__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cardsOrder */ "./js/pages/categoryPage/cardsOrder.js");
+/* harmony import */ var _DOMFunctions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../DOMFunctions */ "./js/pages/DOMFunctions.js");
+/* harmony import */ var _cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../cardsCreators/cardsOrder */ "./js/pages/cardsCreators/cardsOrder.js");
 /* harmony import */ var _showPage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../showPage */ "./js/pages/showPage.js");
 /* harmony import */ var _statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../statisticsPage/createLocalStorage */ "./js/pages/statisticsPage/createLocalStorage.js");
 /* harmony import */ var _statisticsPage_statisticFilter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../statisticsPage/statisticFilter */ "./js/pages/statisticsPage/statisticFilter.js");
@@ -379,7 +418,7 @@ function setNextCardAsActive() {
   const currentPage = localStorage.getItem('page');
 
   const cards = document.querySelectorAll('.card');
-  const numOfActiveCard = (0,_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCardsOrder)()[0];
+  const numOfActiveCard = (0,_cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCardsOrder)()[0];
 
   const activeCard = cards[numOfActiveCard];
   let currentCardObj;
@@ -395,7 +434,7 @@ function setNextCardAsActive() {
       currentCardObj = i;
     }
   });
-  (0,_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.setCurrentCard)(currentCardObj);
+  (0,_cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.setCurrentCard)(currentCardObj);
 
   new Audio(currentCardObj.audio).play();
 }
@@ -404,17 +443,17 @@ function blockCardClick(blockCard) {
   document.querySelector(`#${blockCard}`).classList.add('block-card');
 }
 function checkCorrectCard(e) {
-  const blockCard = (0,_showPage__WEBPACK_IMPORTED_MODULE_2__.shortName)((0,_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCurrentCard)().title);
+  const blockCard = (0,_showPage__WEBPACK_IMPORTED_MODULE_2__.shortName)((0,_cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCurrentCard)().title);
 
   if (e.target.getAttribute('id') === blockCard) {
     new Audio('./assets/audio/win.mp3').play();
-    (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_3__.editStatistics)((0,_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCurrentCard)().title, 'playClick', 1);
+    (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_3__.editStatistics)((0,_cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCurrentCard)().title, 'playClick', 1);
 
-    (0,_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCardsOrder)().shift();
-    (0,_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.setCardsOrder)((0,_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCardsOrder)());
+    (0,_cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCardsOrder)().shift();
+    (0,_cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.setCardsOrder)((0,_cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCardsOrder)());
     blockCardClick(blockCard);
 
-    if ((0,_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCardsOrder)().length >= 1) {
+    if ((0,_cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCardsOrder)().length >= 1) {
       addHeart('GOOD');
       setNextCardAsActive();
     } else {
@@ -424,8 +463,8 @@ function checkCorrectCard(e) {
   } else {
     addHeart('BAD');
     new Audio('./assets/audio/fail.mp3').play();
-    (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_3__.editStatistics)((0,_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCurrentCard)().title, 'errors', 1);
-    (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_3__.editStatistics)((0,_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCurrentCard)().title, 'playClick', 1);
+    (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_3__.editStatistics)((0,_cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCurrentCard)().title, 'errors', 1);
+    (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_3__.editStatistics)((0,_cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.getCurrentCard)().title, 'playClick', 1);
   }
 }
 function createListenersForPlay() {
@@ -441,7 +480,7 @@ function startPlay() {
   cards.forEach((card) => {
     card.classList.remove('block-card');
   });
-  (0,_cardsOrder__WEBPACK_IMPORTED_MODULE_1__["default"])(document.querySelectorAll('.card').length);
+  (0,_cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__["default"])(document.querySelectorAll('.card').length);
   setNextCardAsActive();
   createListenersForPlay();
 }
@@ -458,7 +497,7 @@ function clickPlayBtn() {
 
       startPlay();
     } else if (block.classList.contains('hide') && localStorage.getItem('page') !== 'sections' && btnPlay.textContent === 'REPEAT') {
-      (0,_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.repeatAudio)();
+      (0,_cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.repeatAudio)();
     } else if (!document.querySelector('.text-btn') && localStorage.getItem('page') === 'sections') {
       (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_0__.showTextUnderPlayBtn)('Choose a topic');
     }
@@ -781,20 +820,16 @@ function createRow(parent, inner, addClass = null) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "cleanPage": () => (/* binding */ cleanPage),
+/* harmony export */   "cleanPage": () => (/* reexport safe */ _DOMFunctions__WEBPACK_IMPORTED_MODULE_1__.cleanPage),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "hidePlayBtn": () => (/* binding */ hidePlayBtn),
+/* harmony export */   "hidePlayBtn": () => (/* reexport safe */ _DOMFunctions__WEBPACK_IMPORTED_MODULE_1__.hidePlayBtn),
 /* harmony export */   "shortName": () => (/* binding */ shortName)
 /* harmony export */ });
 /* harmony import */ var _cardsCreators_sectionsCardsCreater__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cardsCreators/sectionsCardsCreater */ "./js/pages/cardsCreators/sectionsCardsCreater.js");
-/* harmony import */ var _cardsCreators_categoryCardCreate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cardsCreators/categoryCardCreate */ "./js/pages/cardsCreators/categoryCardCreate.js");
-/* harmony import */ var _categoryPage_DOMFunctions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./categoryPage/DOMFunctions */ "./js/pages/categoryPage/DOMFunctions.js");
-/* harmony import */ var _statisticsPage_statisticCreater__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./statisticsPage/statisticCreater */ "./js/pages/statisticsPage/statisticCreater.js");
-/* harmony import */ var _statisticsPage_statisticFilter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./statisticsPage/statisticFilter */ "./js/pages/statisticsPage/statisticFilter.js");
-/* harmony import */ var _pagesLayout_headerLayout__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pagesLayout/headerLayout */ "./js/pages/pagesLayout/headerLayout.js");
-/* harmony import */ var _statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./statisticsPage/createLocalStorage */ "./js/pages/statisticsPage/createLocalStorage.js");
-
-
+/* harmony import */ var _DOMFunctions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DOMFunctions */ "./js/pages/DOMFunctions.js");
+/* harmony import */ var _statisticsPage_statisticCreater__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./statisticsPage/statisticCreater */ "./js/pages/statisticsPage/statisticCreater.js");
+/* harmony import */ var _pagesLayout_headerLayout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pagesLayout/headerLayout */ "./js/pages/pagesLayout/headerLayout.js");
+/* harmony import */ var _cardsCreators_categoryCardCreate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./cardsCreators/categoryCardCreate */ "./js/pages/cardsCreators/categoryCardCreate.js");
 
 
 
@@ -805,62 +840,18 @@ function shortName(name) {
   return name.toLowerCase().replaceAll(' ', '');
 }
 
-function hidePlayBtn() {
-  document.querySelector('.btn').classList.add('hide');
-}
-function cleanPage() {
-  const album = document.querySelector('.album');
-  const cardParent = album.querySelector('.row');
-  const table = document.querySelector('table');
-  const btnPlay = document.querySelector('.btn');
-
-  if (btnPlay.classList.contains('hide')) {
-    btnPlay.classList.remove('hide');
-  }
-  if (table) {
-    table.remove();
-  }
-  while (cardParent.firstChild) {
-    cardParent.removeChild(cardParent.firstChild);
-  }
-}
-function loadCategoryCards(arr) {
-  arr.forEach(({
-    src, title, translate, audio, key,
-  }) => {
-    new _cardsCreators_categoryCardCreate__WEBPACK_IMPORTED_MODULE_1__["default"](src, title, translate, audio, key).render();
-  });
-}
-function zeroErrorsPage() {
-  hidePlayBtn();
-  const error = document.createElement('div');
-  error.classList.add('zero-error');
-
-  error.textContent = "You don't have any error cards yet";
-
-  document.querySelector('.album').querySelector('.row').append(error);
-}
-function difficultPageCreate() {
-  const errors = (0,_statisticsPage_statisticFilter__WEBPACK_IMPORTED_MODULE_4__.returnEightErrorsOrLess)();
-  if (errors.length !== 0) {
-    loadCategoryCards(errors);
-  } else {
-    zeroErrorsPage();
-  }
-}
-
 function showPage(category) {
-  (0,_pagesLayout_headerLayout__WEBPACK_IMPORTED_MODULE_5__.closeMenu)();
-  cleanPage();
-  (0,_categoryPage_DOMFunctions__WEBPACK_IMPORTED_MODULE_2__["default"])();
-  (0,_categoryPage_DOMFunctions__WEBPACK_IMPORTED_MODULE_2__.changeTextOnBtn)('PLAY');
+  (0,_pagesLayout_headerLayout__WEBPACK_IMPORTED_MODULE_3__.closeMenu)();
+  (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_1__.cleanPage)();
+  (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_1__.changeTextOnBtn)('PLAY');
 
   const myCategory = shortName(category);
   localStorage.setItem('page', myCategory);
 
   const resourse = JSON.parse(localStorage.getItem('statistic'));
   if (myCategory === 'sections') {
-    (0,_categoryPage_DOMFunctions__WEBPACK_IMPORTED_MODULE_2__.hideBlockOnPlay)();
+    (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_1__.hideBlockOnPlay)();
     resourse.sections.forEach(({ src, title }) => {
       const cardsNum = resourse[shortName(title)].length;
       new _cardsCreators_sectionsCardsCreater__WEBPACK_IMPORTED_MODULE_0__["default"](src, title, shortName(title), cardsNum).render();
@@ -871,26 +862,13 @@ function showPage(category) {
         showPage(card.getAttribute('id'));
       });
     });
-  } else if (myCategory === 'difficult') {
-    (0,_categoryPage_DOMFunctions__WEBPACK_IMPORTED_MODULE_2__.showBlockOnPlay)();
-    difficultPageCreate();
   } else if (myCategory === 'statistic') {
-    (0,_categoryPage_DOMFunctions__WEBPACK_IMPORTED_MODULE_2__.hideBlockOnPlay)();
-    (0,_statisticsPage_statisticCreater__WEBPACK_IMPORTED_MODULE_3__["default"])();
-    hidePlayBtn();
-    const resetBtn = document.querySelector('.reset-btn');
-    const diffBtn = document.querySelector('.diff-btn');
-    if (resetBtn && diffBtn) {
-      resetBtn.addEventListener('click', () => {
-        (0,_statisticsPage_createLocalStorage__WEBPACK_IMPORTED_MODULE_6__.reloadPageAfterReset)();
-      });
-      diffBtn.addEventListener('click', () => {
-        showPage('Difficult');
-      });
-    }
+    (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_1__.hideBlockOnPlay)();
+    (0,_statisticsPage_statisticCreater__WEBPACK_IMPORTED_MODULE_2__["default"])();
+    (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_1__.hidePlayBtn)();
   } else {
-    (0,_categoryPage_DOMFunctions__WEBPACK_IMPORTED_MODULE_2__.showBlockOnPlay)();
-    loadCategoryCards(resourse[myCategory]);
+    (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_1__.showBlockOnPlay)();
+    (0,_cardsCreators_categoryCardCreate__WEBPACK_IMPORTED_MODULE_4__.loadCategoryCards)(resourse[myCategory]);
   }
 }
 
@@ -910,12 +888,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "editStatistics": () => (/* binding */ editStatistics),
-/* harmony export */   "reloadPageAfterReset": () => (/* binding */ reloadPageAfterReset)
+/* harmony export */   "resetStatistic": () => (/* binding */ resetStatistic)
 /* harmony export */ });
 /* harmony import */ var _services_getResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/getResource */ "./js/services/getResource.js");
-/* harmony import */ var _statisticCreater__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./statisticCreater */ "./js/pages/statisticsPage/statisticCreater.js");
 
-
+// import createStatisticsPageLayout from './statisticCreater';
 
 function searchInLocalStorage(func) {
   const newData = JSON.parse(localStorage.getItem('statistic'));
@@ -969,12 +946,6 @@ const createLocalStorage = async () => {
     });
 };
 
-function reloadPageAfterReset() {
-  resetStatistic();
-  document.querySelector('table').remove();
-  (0,_statisticCreater__WEBPACK_IMPORTED_MODULE_1__["default"])();
-}
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createLocalStorage);
 
 
@@ -989,10 +960,17 @@ function reloadPageAfterReset() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "difficultPageCreate": () => (/* binding */ difficultPageCreate)
 /* harmony export */ });
 /* harmony import */ var _statisticFilter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./statisticFilter */ "./js/pages/statisticsPage/statisticFilter.js");
 /* harmony import */ var _pagesLayout_statisticLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pagesLayout/statisticLayout */ "./js/pages/pagesLayout/statisticLayout.js");
+/* harmony import */ var _createLocalStorage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./createLocalStorage */ "./js/pages/statisticsPage/createLocalStorage.js");
+/* harmony import */ var _DOMFunctions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../DOMFunctions */ "./js/pages/DOMFunctions.js");
+/* harmony import */ var _cardsCreators_categoryCardCreate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../cardsCreators/categoryCardCreate */ "./js/pages/cardsCreators/categoryCardCreate.js");
+
+
+
 
 
 
@@ -1055,6 +1033,19 @@ function createLegend(container) {
     }
   });
 }
+function difficultPageCreate() {
+  localStorage.setItem('page', 'difficult');
+  const errors = (0,_statisticFilter__WEBPACK_IMPORTED_MODULE_0__.returnEightErrorsOrLess)();
+  (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_3__.cleanPage)();
+  (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_3__["default"])();
+  (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_3__.changeTextOnBtn)('PLAY');
+  if (errors.length !== 0) {
+    (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_3__.showBlockOnPlay)();
+    (0,_cardsCreators_categoryCardCreate__WEBPACK_IMPORTED_MODULE_4__.loadCategoryCards)(errors);
+  } else {
+    (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_3__.zeroErrorsPage)();
+  }
+}
 function createStatisticBtn() {
   const container = document.querySelector('.statistic-group');
   const btnGroup = document.createElement('div');
@@ -1071,6 +1062,16 @@ function createStatisticBtn() {
   container.append(btnGroup);
   btnGroup.append(resetBtn);
   btnGroup.append(diffBtn);
+
+  if (resetBtn && diffBtn) {
+    resetBtn.addEventListener('click', () => {
+      (0,_createLocalStorage__WEBPACK_IMPORTED_MODULE_2__.resetStatistic)();
+      (0,_statisticFilter__WEBPACK_IMPORTED_MODULE_0__["default"])('Sr.No.', true);
+    });
+    diffBtn.addEventListener('click', () => {
+      difficultPageCreate();
+    });
+  }
 }
 
 function closeDropdownContent(e) {
@@ -1117,6 +1118,7 @@ function createStatisticsPageLayout() {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createStatisticsPageLayout);
+
 
 
 /***/ }),
@@ -1308,8 +1310,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "applyTheme": () => (/* binding */ applyTheme),
 /* harmony export */   "firstCheckTheme": () => (/* binding */ firstCheckTheme)
 /* harmony export */ });
-/* harmony import */ var _categoryPage_DOMFunctions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./categoryPage/DOMFunctions */ "./js/pages/categoryPage/DOMFunctions.js");
+/* harmony import */ var _DOMFunctions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DOMFunctions */ "./js/pages/DOMFunctions.js");
 /* harmony import */ var _showPage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./showPage */ "./js/pages/showPage.js");
+/* harmony import */ var _statisticsPage_statisticCreater__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./statisticsPage/statisticCreater */ "./js/pages/statisticsPage/statisticCreater.js");
+
 
 
 
@@ -1319,8 +1323,8 @@ function applyTheme(themeName) {
   localStorage.setItem('theme', themeName);
 
   if (themeName === 'train') {
-    (0,_categoryPage_DOMFunctions__WEBPACK_IMPORTED_MODULE_0__["default"])();
-    (0,_categoryPage_DOMFunctions__WEBPACK_IMPORTED_MODULE_0__.hideBlockOnPlay)();
+    (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_0__["default"])();
+    (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_0__.hideBlockOnPlay)();
   }
 }
 function changeMode() {
@@ -1333,8 +1337,10 @@ function changeMode() {
   } else {
     applyTheme('train');
   }
-  if (currentPage !== 'sections') {
+  if (currentPage !== 'sections' && currentPage !== 'difficult') {
     (0,_showPage__WEBPACK_IMPORTED_MODULE_1__["default"])(currentPage);
+  } else if (currentPage === 'difficult') {
+    (0,_statisticsPage_statisticCreater__WEBPACK_IMPORTED_MODULE_2__.difficultPageCreate)();
   }
 }
 
