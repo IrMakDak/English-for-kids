@@ -1,4 +1,5 @@
 import { createRow } from '../pagesLayout/statisticLayout';
+import { sections } from './cards';
 
 function cleanTBody() {
   const tbody = document.querySelector('tbody');
@@ -26,16 +27,13 @@ function updateStatisticContent(num, category, word, translation, trainClick, pl
 }
 
 function returnAllWords() {
-  const statistic = JSON.parse(localStorage.getItem('statistic'));
-  const keys = Object.keys(statistic);
+  const cards = JSON.parse(localStorage.getItem('statistic'));
 
   const arr = [];
-  keys.forEach((key) => {
-    if (key !== 'sections') {
-      statistic[key].forEach((i) => {
-        arr.push(i);
-      });
-    }
+  sections.forEach((section) => {
+    cards[section].forEach((currentItem) => {
+      arr.push(currentItem);
+    });
   });
   return (arr);
 }
@@ -64,19 +62,17 @@ function tableSort(arr, filter) {
   });
   return arr;
 }
-function createStatisticsBySection(sections) {
+function createStatisticsBySection(orderOfSections) {
   let num = 1;
 
   const newData = JSON.parse(localStorage.getItem('statistic'));
-  sections.forEach((section) => {
-    if (section !== 'sections') {
-      newData[section].forEach(({
-        title, translate, trainClick, playClick, errors, key,
-      }) => {
-        updateStatisticContent(num, key, title, translate, trainClick, playClick, errors);
-        num += 1;
-      });
-    }
+  orderOfSections.forEach((section) => {
+    newData[section].forEach(({
+      title, translate, trainClick, playClick, errors, key,
+    }) => {
+      updateStatisticContent(num, key, title, translate, trainClick, playClick, errors);
+      num += 1;
+    });
   });
 }
 
@@ -100,22 +96,19 @@ function sortAllWords(title, reverse) {
 function statisticFilter(filter, reverse) {
   cleanTBody();
 
-  const statistic = JSON.parse(localStorage.getItem('statistic'));
-  const keys = Object.keys(statistic);
-
   switch (filter) {
     case 'Category':
       if (reverse) {
-        createStatisticsBySection(keys.sort());
+        createStatisticsBySection(sections.sort());
       } else {
-        createStatisticsBySection(keys.sort().reverse());
+        createStatisticsBySection(sections.sort().reverse());
       }
       break;
     case 'Sr.No.':
       if (reverse) {
-        createStatisticsBySection(keys);
+        createStatisticsBySection(sections);
       } else {
-        createStatisticsBySection(keys.reverse());
+        createStatisticsBySection(sections.reverse());
       }
       break;
     case 'Word':
@@ -142,16 +135,16 @@ function statisticFilter(filter, reverse) {
 }
 
 function returnEightErrorsOrLess() {
-  let errorClick = tableSort(returnAllWords(), 'errors');
+  let arrOfErrors = tableSort(returnAllWords(), 'errors');
 
-  errorClick = errorClick.filter((i) => i.errors !== 0).reverse();
-  if (errorClick.length >= 8) {
-    errorClick = errorClick.slice(0, 8);
+  arrOfErrors = arrOfErrors.filter((item) => item.errors !== 0).reverse();
+  if (arrOfErrors.length >= 8) {
+    arrOfErrors = arrOfErrors.slice(0, 8);
   } else {
-    errorClick = errorClick.slice(0, errorClick.length);
+    arrOfErrors = arrOfErrors.slice(0, arrOfErrors.length);
   }
 
-  return errorClick;
+  return arrOfErrors;
 }
 
 export default statisticFilter;

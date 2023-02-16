@@ -1,19 +1,19 @@
-import showPage from '../showPage';
-import createHeaderLayout from './headerLayout';
+import showPage from './showPage';
+import createHeaderLayout from '../pagesLayout/headerLayout';
 
 class LiCreate {
-  constructor(title) {
+  constructor(title, container) {
     this.title = title;
+    this.container = container;
   }
 
   render() {
-    const container = document.querySelector('.header-container');
     const li = document.createElement('li');
     li.classList.add('li-header');
     li.innerHTML = `
             <span class="change-section-header">${this.title}</span>
         `;
-    container.append(li);
+    this.container.append(li);
     const span = li.querySelector('span');
     span.addEventListener('click', () => {
       showPage(this.title);
@@ -26,6 +26,7 @@ function createHeader() {
 
   const btnMain = document.querySelector('.main-page');
   const btnStatistic = document.querySelector('.statistic-page');
+  const container = document.querySelector('.header-container');
 
   btnMain.addEventListener('click', () => {
     showPage('sections');
@@ -36,7 +37,7 @@ function createHeader() {
 
   const resourse = JSON.parse(localStorage.getItem('statistic'));
   resourse.sections.forEach((i) => {
-    new LiCreate(i.title).render();
+    new LiCreate(i.title, container).render();
   });
 }
 

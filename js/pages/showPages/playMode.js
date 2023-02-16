@@ -3,15 +3,15 @@ import cleanForNewGame, {
 } from '../DOMFunctions';
 
 import createArray, {
-  getCurrentCard, setCurrentCard, getCardsOrder, setCardsOrder, repeatAudio,
+  getCurrentCard, setCurrentCard, getCardsOrder, setCardsOrder, repeatAudio, playAudio,
 } from '../cardsCreators/cardsOrder';
 
 import showPage, {
   shortName, hidePlayBtn, cleanPage,
-} from '../showPage';
+} from './showPage';
 
-import { editStatistics } from '../statisticsPage/createLocalStorage';
-import { returnAllWords } from '../statisticsPage/statisticFilter';
+import { editStatistics } from '../statistics/createLocalStorage';
+import { returnAllWords } from '../statistics/statisticFilter';
 
 function showResult() {
   const blockedLayer = document.querySelector('.play-block');
@@ -28,11 +28,11 @@ function showResult() {
   if (document.querySelector('.heart-bad')) {
     result.setAttribute('src', './assets/icons/result-sad.jpg');
     showTextUnderPlayBtn(`You lose. Number of mistakes = ${document.querySelectorAll('.heart-bad').length}`);
-    new Audio('./assets/audio/loseGame.mp3').play();
+    playAudio('./assets/audio/loseGame.mp3');
   } else {
     result.setAttribute('src', './assets/icons/win.jpg');
     showTextUnderPlayBtn("You won! You didn't make a single mistake");
-    new Audio('./assets/audio/winGame.mp3').play();
+    playAudio('./assets/audio/winGame.mp3');
   }
 
   blockedLayer.prepend(result);
@@ -41,11 +41,9 @@ function finishGame() {
   showBlockOnPlay();
   showResult();
   const nav = document.querySelector('.navbar');
-  // document.querySelector('.navbar').style = 'pointer-events: none;';
   nav.classList.add('navbar-disabled');
   setTimeout(() => {
     showPage('sections');
-    // document.querySelector('.navbar').style = '';
     nav.classList.remove('navbar-disabled');
   }, 3000);
 }
@@ -104,14 +102,13 @@ function setNextCardAsActive() {
   } else {
     arrForSearch = returnAllWords();
   }
-  arrForSearch.forEach((i) => {
-    if (i.title.toLocaleLowerCase().replace(' ', '') === activeCard.id) {
-      currentCardObj = i;
+  arrForSearch.forEach((arrayItem) => {
+    if (shortName(arrayItem.title) === activeCard.id) {
+      currentCardObj = arrayItem;
     }
   });
   setCurrentCard(currentCardObj);
-
-  new Audio(currentCardObj.audio).play();
+  playAudio(currentCardObj.audio);
 }
 
 function blockCardClick(blockCard) {
@@ -121,7 +118,7 @@ function checkCorrectCard(e) {
   const blockCard = shortName(getCurrentCard().title);
 
   if (e.target.getAttribute('id') === blockCard) {
-    new Audio('./assets/audio/win.mp3').play();
+    playAudio('./assets/audio/win.mp3');
     editStatistics(getCurrentCard().title, 'playClick', 1);
 
     getCardsOrder().shift();
@@ -137,7 +134,7 @@ function checkCorrectCard(e) {
     }
   } else {
     addHeart('BAD');
-    new Audio('./assets/audio/fail.mp3').play();
+    playAudio('./assets/audio/fail.mp3');
     editStatistics(getCurrentCard().title, 'errors', 1);
     editStatistics(getCurrentCard().title, 'playClick', 1);
   }
@@ -165,16 +162,21 @@ function clickPlayBtn() {
   const block = document.querySelector('.play-block');
 
   btnPlay.addEventListener('click', () => {
-    if (!block.classList.contains('hide') && localStorage.getItem('page') !== 'sections' && btnPlay.textContent === 'PLAY') {
-      hideBlockOnPlay();
-      cleanForNewGame();
-      changeTextOnBtn('REPEAT');
-
-      startPlay();
-    } else if (block.classList.contains('hide') && localStorage.getItem('page') !== 'sections' && btnPlay.textContent === 'REPEAT') {
-      repeatAudio();
-    } else if (!document.querySelector('.text-btn') && localStorage.getItem('page') === 'sections') {
-      showTextUnderPlayBtn('Choose a topic');
+    if (localStorage.getItem('page') !== 'sections') {
+      if (!block.classList.contains('hide') && btnPlay.textContent === 'PLAY') {
+        hideBlockOnPlay();
+        cleanForNewGame();
+        changeTextOnBtn('REPEAT');
+        startPlay();
+      }
+      if (btnPlay.textContent === 'REPEAT') {
+        repeatAudio();
+      }
+    }
+    if (localStorage.getItem('page') === 'sections') {
+      if (!document.querySelector('.text-btn')) {
+        showTextUnderPlayBtn('Choose a topic');
+      }
     }
   });
   block.addEventListener('click', () => {

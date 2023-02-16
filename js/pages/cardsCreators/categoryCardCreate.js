@@ -1,4 +1,5 @@
-import { editStatistics } from '../statisticsPage/createLocalStorage';
+import { editStatistics } from '../statistics/createLocalStorage';
+import { playAudio } from './cardsOrder';
 
 function turnOverCard(parentOfCard) {
   const cleanCards = document.querySelectorAll('.rotate180');
@@ -59,7 +60,7 @@ class CategoryCard {
       col.querySelector('.card').addEventListener('click', (e) => {
         editStatistics(this.title, 'trainClick', 1);
         if (e.target !== col.querySelector('.translate-icon')) {
-          new Audio(`${this.audio}`).play();
+          playAudio(`${this.audio}`);
         } else {
           turnOverCard(col);
         }

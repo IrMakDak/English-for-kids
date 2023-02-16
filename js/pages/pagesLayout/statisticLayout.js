@@ -1,3 +1,5 @@
+import { sections } from '../statistics/cards';
+
 function thLayout(parent, inner) {
   const heading = document.createElement('th');
   heading.classList.add('dropdown');
@@ -69,13 +71,16 @@ function createLiForLegend(key, container) {
 
   container.append(legendItem);
 }
+function checkColorAdditin(inner) {
+  return (typeof (inner) === 'string' && sections.find((section) => section === inner.toLowerCase()));
+}
 function createRow(parent, inner, addClass = null) {
   const rowData = document.createElement('td');
   rowData.textContent = inner;
   if (addClass) {
     rowData.classList.add(addClass);
   }
-  if (inner === 'Food1' || inner === 'Food2' || inner === 'Nature' || inner === 'Animals1' || inner === 'Animals2' || inner === 'Birds' || inner === 'Products1' || inner === 'Products2') {
+  if (checkColorAdditin(inner)) {
     rowData.classList.add('category-icon');
     addColorClass(rowData, inner);
   }

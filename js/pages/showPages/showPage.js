@@ -1,10 +1,10 @@
-import Card from './cardsCreators/sectionsCardsCreater';
+import Card from '../cardsCreators/sectionsCardsCreater';
 import cleanForNewGame, {
   showBlockOnPlay, hideBlockOnPlay, changeTextOnBtn, cleanPage, hidePlayBtn,
-} from './DOMFunctions';
-import createStatisticsPageLayout from './statisticsPage/statisticCreater';
-import { closeMenu } from './pagesLayout/headerLayout';
-import { loadCategoryCards } from './cardsCreators/categoryCardCreate';
+} from '../DOMFunctions';
+import createStatisticsPageLayout from './statisticCreater';
+import { closeMenu } from '../pagesLayout/headerLayout';
+import { loadCategoryCards } from '../cardsCreators/categoryCardCreate';
 
 function shortName(name) {
   return name.toLowerCase().replaceAll(' ', '');

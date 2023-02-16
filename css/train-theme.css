@@ -1,3 +1,4 @@
+@import url('./_variables.css');
 .card-text::after{
     content: '';
     display: block;
@@ -5,16 +6,16 @@
     right: 0;
     top: -250px;
     font-size: 20px;
-    background: #343a40;
+    background: var(--header-bg);
     border-radius: 100%;
     width: 15px;
     height: 15px;
 }
 .header-color {
-  background-color: #343a40;
+  background-color: var(--header-bg);
 }
 .diff-btn{
-  background: #343a40;
+  background: var(--header-bg);
   color: #fff;
   font-weight: 600;
 }
@@ -45,7 +46,7 @@
   text-align: center;
 }
 .train-column {
-  background: #343a40;
+  background: var(--header-bg);
   color: #fff;
   font-weight: bold;
   text-align: center;

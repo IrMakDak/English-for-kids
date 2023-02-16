@@ -20,13 +20,16 @@ function createArray(dataLength) {
   }
   setCardsOrder(Array.from(mySet));
 }
+function playAudio(wayToAudio) {
+  new Audio(wayToAudio).play();
+}
 function repeatAudio() {
   if (getCurrentCard()) {
-    new Audio(getCurrentCard().audio).play();
+    playAudio(getCurrentCard().audio);
   }
 }
 
 export default createArray;
 export {
-  getCurrentCard, setCurrentCard, getCardsOrder, setCardsOrder, repeatAudio,
+  getCurrentCard, setCurrentCard, getCardsOrder, setCardsOrder, repeatAudio, playAudio,
 };

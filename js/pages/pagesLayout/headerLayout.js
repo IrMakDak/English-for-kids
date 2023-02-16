@@ -2,21 +2,24 @@ function openMenu() {
   const menuBtn = document.querySelector('.toggler');
   const menu = document.querySelector('.header-container');
   const backg = document.querySelector('.background-all');
+  const delayMenu = 200;
 
   menuBtn.classList.add('hide');
   backg.classList.remove('hide');
 
   setTimeout(() => {
     backg.classList.remove('hide-bg');
-  }, 200);
+  }, delayMenu);
   setTimeout(() => {
     menu.classList.remove('hide-menu-left');
-  }, 200);
+  }, delayMenu);
 
-  document.body.style = 'overflow:  hidden;';
+  document.body.classList.add('overflow-hidden');
 }
 function closeMenu() {
   const menu = document.querySelector('.header-container');
+  const delayMenu = 300;
+
   if (!menu.classList.contains('hide-menu-left')) {
     menu.classList.add('hide-menu-left');
   }
@@ -29,9 +32,9 @@ function closeMenu() {
     backg.classList.add('hide-bg');
     setTimeout(() => {
       backg.classList.add('hide');
-    }, 300);
+    }, delayMenu);
   }
-  document.body.style = '';
+  document.body.classList.remove('overflow-hidden');
 }
 
 function createHeaderLayout() {

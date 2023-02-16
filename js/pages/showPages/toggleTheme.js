@@ -1,6 +1,6 @@
-import cleanForNewGame, { hideBlockOnPlay } from './DOMFunctions';
+import cleanForNewGame, { hideBlockOnPlay } from '../DOMFunctions';
 import showPage from './showPage';
-import { difficultPageCreate } from './statisticsPage/statisticCreater';
+import { difficultPageCreate } from './statisticCreater';
 
 function applyTheme(themeName) {
   const themeUrl = `css/${themeName}-theme.css`;
@@ -29,7 +29,7 @@ function changeMode() {
   }
 }
 
-function firstCheckTheme() {
+function checkTheme() {
   const activeTheme = localStorage.getItem('theme');
   if (activeTheme) {
     applyTheme(activeTheme);
@@ -48,5 +48,5 @@ function firstCheckTheme() {
     changeMode();
   });
 }
-
-export { firstCheckTheme, applyTheme };
+export default checkTheme;
+export { applyTheme };

@@ -1,10 +1,11 @@
-import statisticFilter, { returnEightErrorsOrLess } from './statisticFilter';
+import statisticFilter, { returnEightErrorsOrLess } from '../statistics/statisticFilter';
 import thLayout, { createLiForLegend } from '../pagesLayout/statisticLayout';
-import { resetStatistic } from './createLocalStorage';
+import { resetStatistic } from '../statistics/createLocalStorage';
 import cleanForNewGame, {
   showBlockOnPlay, zeroErrorsPage, cleanPage, changeTextOnBtn,
 } from '../DOMFunctions';
 import { loadCategoryCards } from '../cardsCreators/categoryCardCreate';
+import { sections } from '../statistics/cards';
 
 function clickTh(heading, inner) {
   const ascending = heading.querySelector('.ascending');
@@ -57,12 +58,8 @@ function createLegend(container) {
   div.append(legendTitle);
   div.append(containerLegend);
 
-  const statistic = JSON.parse(localStorage.getItem('statistic'));
-  const keys = Object.keys(statistic);
-  keys.forEach((key) => {
-    if (key !== 'sections') {
-      createLiForLegend(key, containerLegend);
-    }
+  sections.forEach((section) => {
+    createLiForLegend(section, containerLegend);
   });
 }
 function difficultPageCreate() {
@@ -106,23 +103,23 @@ function createStatisticBtn() {
   }
 }
 
-function closeDropdownContent(e) {
-  if (!e.target.classList.contains('dropbtn')) {
+function closeDropdownContent(event) {
+  if (!event.target.classList.contains('dropbtn')) {
     const myDropdowns = document.querySelectorAll('.dropdown-content');
-    myDropdowns.forEach((i) => {
-      if (!i.classList.contains('hide')) {
-        i.classList.add('hide');
+    myDropdowns.forEach((dropdown) => {
+      if (!dropdown.classList.contains('hide')) {
+        dropdown.classList.add('hide');
       }
     });
   }
-  if (e.target.classList.contains('dropbtn')) {
+  if (event.target.classList.contains('dropbtn')) {
     const allContents = document.querySelectorAll('.dropdown-content');
-    const content = e.target.parentElement.querySelector('.dropdown-content');
+    const content = event.target.parentElement.querySelector('.dropdown-content');
 
-    allContents.forEach((i) => {
-      if (!i.classList.contains('hide') && content !== i) {
-        i.classList.add('hide');
-      } else if (content === i) {
+    allContents.forEach((singleContent) => {
+      if (!singleContent.classList.contains('hide') && content !== singleContent) {
+        singleContent.classList.add('hide');
+      } else if (content === singleContent) {
         content.classList.toggle('hide');
       }
     });
