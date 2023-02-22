@@ -1,14 +1,26 @@
-import mainPageLayout from "./pages/mainPage/mainPageLayout";
-import showPage from "./pages/showPage";
-import createHeader from "./pages/header/headerCreater";
-import { firstCheckTheme } from "./pages/toggleTheme";
+import mainPageLayout from './pages/pagesLayout/mainPageLayout';
+import showPage from './pages/showPages/showPage';
+import createHeader from './pages/showPages/headerCreater';
+import checkTheme from './pages/showPages/toggleTheme';
+import { flipCardByClick } from './pages/cardsCreators/categoryCardCreate';
+import { clickPlayBtn } from './pages/showPages/playMode';
+import createLocalStorage from './pages/statistics/createLocalStorage';
 
-document.addEventListener("DOMContentLoaded", () => {
-    const url = 'http://localhost:3000';
+function showMainPage() {
+  createHeader();
+  mainPageLayout();
+  showPage('sections');
 
-    createHeader(url);
-    mainPageLayout();
-    showPage(url, 'sections');
+  clickPlayBtn();
 
-    firstCheckTheme(url);
-})
+  checkTheme();
+  flipCardByClick();
+}
+document.addEventListener('DOMContentLoaded', () => {
+  if (!localStorage.getItem('statistic')) {
+    createLocalStorage();
+    showMainPage();
+  } else {
+    showMainPage();
+  }
+});
