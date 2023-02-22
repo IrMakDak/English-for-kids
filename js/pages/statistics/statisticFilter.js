@@ -39,23 +39,23 @@ function returnAllWords() {
 }
 
 function tableSort(arr, filter) {
-  arr.sort((a, b) => {
-    let aNew;
-    let bNew;
+  arr.sort((item, nextItem) => {
+    let itemNew;
+    let nextItemNew;
     if (filter === 'percent') {
-      aNew = Math.floor((a.errors / a.playClick) * 100);
-      bNew = Math.floor((b.errors / b.playClick) * 100);
-      if (!aNew) {
-        aNew = 0;
+      itemNew = Math.floor((item.errors / item.playClick) * 100);
+      nextItemNew = Math.floor((nextItem.errors / nextItem.playClick) * 100);
+      if (!itemNew) {
+        itemNew = 0;
       }
-      if (!bNew) {
-        bNew = 0;
+      if (!nextItemNew) {
+        nextItemNew = 0;
       }
     } else {
-      aNew = a[filter];
-      bNew = b[filter];
+      itemNew = item[filter];
+      nextItemNew = nextItem[filter];
     }
-    if (aNew > bNew) {
+    if (itemNew > nextItemNew) {
       return 1;
     }
     return -1;

@@ -168,8 +168,7 @@ function clickPlayBtn() {
         cleanForNewGame();
         changeTextOnBtn('REPEAT');
         startPlay();
-      }
-      if (btnPlay.textContent === 'REPEAT') {
+      } else if (btnPlay.textContent === 'REPEAT') {
         repeatAudio();
       }
     }

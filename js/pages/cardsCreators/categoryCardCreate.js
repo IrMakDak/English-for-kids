@@ -81,11 +81,11 @@ function flipCardByClick() {
   document.querySelector('main').addEventListener('click', (e) => {
     const cardsInverted = document.querySelectorAll('.card-inverted');
 
-    cardsInverted.forEach((i) => {
-      if (i.classList.contains('rotate360') && !e.target.classList.contains('translate-icon')) {
-        const card = i.parentElement.firstElementChild;
-        card.classList.remove('rotate180');
-        i.classList.remove('rotate360');
+    cardsInverted.forEach((card) => {
+      if (card.classList.contains('rotate360') && !e.target.classList.contains('translate-icon')) {
+        const currentCard = card.parentElement.firstElementChild;
+        currentCard.classList.remove('rotate180');
+        card.classList.remove('rotate360');
       }
     });
   });

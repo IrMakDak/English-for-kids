@@ -255,11 +255,11 @@ function flipCardByClick() {
   document.querySelector('main').addEventListener('click', (e) => {
     const cardsInverted = document.querySelectorAll('.card-inverted');
 
-    cardsInverted.forEach((i) => {
-      if (i.classList.contains('rotate360') && !e.target.classList.contains('translate-icon')) {
-        const card = i.parentElement.firstElementChild;
-        card.classList.remove('rotate180');
-        i.classList.remove('rotate360');
+    cardsInverted.forEach((card) => {
+      if (card.classList.contains('rotate360') && !e.target.classList.contains('translate-icon')) {
+        const currentCard = card.parentElement.firstElementChild;
+        currentCard.classList.remove('rotate180');
+        card.classList.remove('rotate360');
       }
     });
   });
@@ -616,8 +616,8 @@ function createHeader() {
   });
 
   const resourse = JSON.parse(localStorage.getItem('statistic'));
-  resourse.sections.forEach((i) => {
-    new LiCreate(i.title, container).render();
+  resourse.sections.forEach((section) => {
+    new LiCreate(section.title, container).render();
   });
 }
 
@@ -810,8 +810,7 @@ function clickPlayBtn() {
         (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_0__["default"])();
         (0,_DOMFunctions__WEBPACK_IMPORTED_MODULE_0__.changeTextOnBtn)('REPEAT');
         startPlay();
-      }
-      if (btnPlay.textContent === 'REPEAT') {
+      } else if (btnPlay.textContent === 'REPEAT') {
         (0,_cardsCreators_cardsOrder__WEBPACK_IMPORTED_MODULE_1__.repeatAudio)();
       }
     }
@@ -1732,23 +1731,23 @@ function returnAllWords() {
 }
 
 function tableSort(arr, filter) {
-  arr.sort((a, b) => {
-    let aNew;
-    let bNew;
+  arr.sort((item, nextItem) => {
+    let itemNew;
+    let nextItemNew;
     if (filter === 'percent') {
-      aNew = Math.floor((a.errors / a.playClick) * 100);
-      bNew = Math.floor((b.errors / b.playClick) * 100);
-      if (!aNew) {
-        aNew = 0;
+      itemNew = Math.floor((item.errors / item.playClick) * 100);
+      nextItemNew = Math.floor((nextItem.errors / nextItem.playClick) * 100);
+      if (!itemNew) {
+        itemNew = 0;
       }
-      if (!bNew) {
-        bNew = 0;
+      if (!nextItemNew) {
+        nextItemNew = 0;
       }
     } else {
-      aNew = a[filter];
-      bNew = b[filter];
+      itemNew = item[filter];
+      nextItemNew = nextItem[filter];
     }
-    if (aNew > bNew) {
+    if (itemNew > nextItemNew) {
       return 1;
     }
     return -1;
