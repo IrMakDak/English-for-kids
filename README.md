@@ -1,5 +1,5 @@
 <h1 align="center">
-  :lollipop: English learning game
+  English learning game
 </h1>
 
 ### [Link to deployed application](https://irmakdak.github.io/English-for-kids/)
