@@ -15,6 +15,15 @@
 
 ---
 
+### Install
+```
+git clone https://github.com/IrMakDak/English-for-kids.git
+npm i
+npx webpack
+```
+
+---
+
 ### :hammer_and_wrench: Languages and Tools that have been used:
 
 <div>
