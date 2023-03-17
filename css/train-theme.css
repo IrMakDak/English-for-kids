@@ -6,16 +6,16 @@
     right: 0;
     top: -250px;
     font-size: 20px;
-    background: var(--header-bg);
+    background: #343a40;
     border-radius: 100%;
     width: 15px;
     height: 15px;
 }
 .header-color {
-  background-color: var(--header-bg);
+  background-color: #343a40;
 }
 .diff-btn{
-  background: var(--header-bg);
+  background: #343a40;
   color: #fff;
   font-weight: 600;
 }
@@ -46,7 +46,7 @@
   text-align: center;
 }
 .train-column {
-  background: var(--header-bg);
+  background: #343a40;
   color: #fff;
   font-weight: bold;
   text-align: center;
