@@ -38,6 +38,16 @@ npx webpack
 
 ---
 
+### Screensots:
+
+<img width="1241" alt="Screenshot 2023-03-20 at 13 19 55" src="https://user-images.githubusercontent.com/54810215/226337485-05608566-e73a-4d31-aa6c-bb458557ab04.png">
+
+<img width="1188" alt="Screenshot 2023-03-20 at 13 20 11" src="https://user-images.githubusercontent.com/54810215/226337520-22abb0ba-877f-400a-bd45-3768a756e944.png">
+
+<img width="1229" alt="Screenshot 2023-03-20 at 13 20 23" src="https://user-images.githubusercontent.com/54810215/226337543-c1fc77a1-e1dc-485f-ab11-fd5c7cb8d71a.png">
+
+---
+
 <div id="badges" align="center">
   <a href="https://www.linkedin.com/in/ir-makedonskaya-ximkd/">
     <img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge"/>
